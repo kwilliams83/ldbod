@@ -29,23 +29,23 @@
 #' @return
 #' A list of length 9 with the elements:
 #'
-#' lrd --An n x length(k) matrix where each column vector represents local reachabiility denity (LRD) outlier scores for each specifed k value.  Smaller values indicate a point in more outlying.
+#' lrd --An n x length(k) matrix where each column vector represents the local reachabiility denity (LRD) outlier scores for each specifed k value.  Smaller values indicate a point in more outlying.
 #'
-#' lof   --An n x length(k) matrix where each column vector represents local outlier factor (LOF) outlier scores for each specifed k value. Larger values indicate a point in more outlying.
+#' lof   --An n x length(k) matrix where each column vector represents the local outlier factor (LOF) outlier scores for each specifed k value. Larger values indicate a point in more outlying.
 #'
-#' lde   --An n x length(k) matrix where each column vector represents local density estimate (LDE) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+#' lde   --An n x length(k) matrix where each column vector represents the local density estimate (LDE) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
 #'
-#' ldf   --An n x length(k) matrix where each column vector represents local density factor (LDF) outlier scores for each specifed k value. Larger values indicate a point in more outlying.
+#' ldf   --An n x length(k) matrix where each column vector represents the local density factor (LDF) outlier scores for each specifed k value. Larger values indicate a point in more outlying.
 #'
-#' kde   --An n x length(k) matrix where each column vector represents kernel density estimate (KDE) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+#' kde   --An n x length(k) matrix where each column vector represents the kernel density estimate (KDE) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
 #'
-#' rkof   --An n x length(k) matrix where each column vector represents robust kernel density factor (RKOF) outlier scores for each specifed k value. Larger values indicate a point in more outlying.
+#' rkof   --An n x length(k) matrix where each column vector represents the robust kernel density factor (RKOF) outlier scores for each specifed k value. Larger values indicate a point in more outlying.
 #'
-#' lpde   --An n x length(k) matrix where each column vector represents local parametric density estimate (LPDE) outlier scores for each specifed k value on log scale. Smaller values indicate a point in more outlying.
+#' lpde   --An n x length(k) matrix where each column vector represents the local parametric density estimate (LPDE) outlier scores for each specifed k value on log scale. Smaller values indicate a point in more outlying.
 #'
-#' lpdf  --An n x length(k) matrix where each column vector represents local parametric density factor (LPDF) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+#' lpdf  --An n x length(k) matrix where each column vector represents the local parametric density factor (LPDF) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
 #'
-#' lpdr   --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+#' lpdr   --An n x length(k) matrix where each column vector represents the local parametric density ratio (LPDR) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
 #'
 #' If a method is not specified then returns NULL
 #'
