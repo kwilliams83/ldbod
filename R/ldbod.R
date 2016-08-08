@@ -46,6 +46,7 @@
 #' lpdf  --An n x length(k) matrix where each column vector represents the local parametric density factor (LPDF) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
 #'
 #' lpdr   --An n x length(k) matrix where each column vector represents the local parametric density ratio (LPDR) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+#' LPDR is typically used to detect groups of outliers.
 #'
 #' If a method is not specified then returns NULL
 #'

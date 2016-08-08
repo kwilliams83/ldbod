@@ -1,0 +1,16 @@
+Package: ldbod
+Type: Package
+Title: Local Density-Based Outlier Detection
+Version: 0.1.0
+Author: Kristopher Williams
+Maintainer: Who to complain to <kristopher.williams83@gmail.com>
+Description: Compute local density-based outlier scores for ranking outliers with flexible nearest
+    neighbor search.  Accommodates unsupervised and semi-supervised outlier detection, and allows for
+    random subsampling.
+Depends:
+    RANN,
+    mnormt
+License: MIT
+LazyData: TRUE
+RoxygenNote: 5.0.1
+https://github.com/kt1williams/ldbod

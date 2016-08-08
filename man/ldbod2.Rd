@@ -59,14 +59,16 @@ lpdr   --An n x length(k) matrix where each column vector represents outlier sco
 If a method is not specified then returns NULL
 }
 \details{
-Computes the local density-based outlier scores for input data X referencing Y.  Y could be a set of normal points for semi-supervised
-outlier detection, or any other set of reference points.  Allows users the flexibility to reference other data sets besides subsets of X.
+Computes the local density-based outlier scores for input data X referencing data Y.  For semi-supervised learning Y would be a set of "normal"
+reference points; otherwise, Y can be any other set of reference points of interest. This allows users the flexibility to reference other data sets besides query data set X or
+a subset of X.
 
 Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
-Methods LDF and RKOF utilize guassian kernels.
+Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution.
+Outlier scores returned are non-negative except for lpde adn lpdr which are log scaled densities (natural log).
 
-All kNN distances are carried out using the RANN package. Multivariate t densities for method LPDF are
-computed using mnormt package.  Refer to specific packages for more details.
+All kNN computations are carried out using the nn2() function from the RANN package. Multivariate t densities are
+computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.
 }
 \examples{
 # 500 x 2 data matrix

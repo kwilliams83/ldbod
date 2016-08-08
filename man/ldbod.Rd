@@ -38,30 +38,34 @@ treetype Character vector specifiying tree method.  Either "kd" or '"d" tree may
 \value{
 A list of length 9 with the elements:
 
-lrd --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value.  Smaller values indicate a point in more outlying.
+lrd --An n x length(k) matrix where each column vector represents the local reachabiility denity (LRD) outlier scores for each specifed k value.  Smaller values indicate a point in more outlying.
 
-lof   --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value. Larger values indicate a point in more outlying.
+lof   --An n x length(k) matrix where each column vector represents the local outlier factor (LOF) outlier scores for each specifed k value. Larger values indicate a point in more outlying.
 
-lde   --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+lde   --An n x length(k) matrix where each column vector represents the local density estimate (LDE) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
 
-ldf   --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value. Larger values indicate a point in more outlying.
+ldf   --An n x length(k) matrix where each column vector represents the local density factor (LDF) outlier scores for each specifed k value. Larger values indicate a point in more outlying.
 
-kde   --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+kde   --An n x length(k) matrix where each column vector represents the kernel density estimate (KDE) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
 
-rkof   --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value. Larger values indicate a point in more outlying.
+rkof   --An n x length(k) matrix where each column vector represents the robust kernel density factor (RKOF) outlier scores for each specifed k value. Larger values indicate a point in more outlying.
 
-lpde   --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+lpde   --An n x length(k) matrix where each column vector represents the local parametric density estimate (LPDE) outlier scores for each specifed k value on log scale. Smaller values indicate a point in more outlying.
 
-lpdf  --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+lpdf  --An n x length(k) matrix where each column vector represents the local parametric density factor (LPDF) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
 
-lpdr   --An n x length(k) matrix where each column vector represents outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+lpdr   --An n x length(k) matrix where each column vector represents the local parametric density ratio (LPDR) outlier scores for each specifed k value. Smaller values indicate a point in more outlying.
+LPDR is typically used to detect groups of outliers.
 
 If a method is not specified then returns NULL
 }
 \details{
-Computes the local density-based outlier scores for input data X referencing a random subsample of the input data X.
+Computes the local density-based outlier scores for input data X referencing a random subsample of the input data X. The subsampled
+data set is constructed by drawning n_sub samples from X without replacement.
+
 Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
-Methods LDF and RKOF utilize guassian kernels.
+Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution. Outlier scores returned are non-negative
+except for lpde adn lpdr which are log scaled densities (natural log).
 
 All kNN computations are carried out using the nn2() function from the RANN package. Multivariate t densities are
 computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.
@@ -88,13 +92,12 @@ plot(X)
 points(X[order(scores$lpde,decreasing=F)[1:5],],col=2)
 
 
- # compute outlier scores for k= 10,20 with 10\% subsampling for methods 'lof' and 'lpdf'
+# compute outlier scores for k= 10,20 with 10\% subsampling for methods 'lof' and 'lpdf'
 scores <- ldbod(X, k = c(10,20),n_sub = 0.10*nrow(X), method = c('lof','lpdf'))
 
 # plot data and highlight top 5 outliers retuned by lof for k=20
 plot(X)
 points(X[order(scores$lof[,2],decreasing=T)[1:5],],col=2)
-
 
 
 
