@@ -2,7 +2,7 @@
 % Please edit documentation in R/ldbod.R
 \name{ldbod}
 \alias{ldbod}
-\title{Local Density-Based Outlier Detection using random subsampling with flexible nearest neighbor search.}
+\title{Local Density-Based Outlier Detection with Approximate Nearest Neighbor Search and Subsampling}
 \usage{
 ldbod(X = data, k = c(10, 20), n_sub = nrow(X), method = c("lof", "ldf",
   "rkof", "lpdf"), ldf.param = c(h = 1, c = 0.1), rkof.param = c(alpha = 1,
@@ -13,18 +13,21 @@ ldbod(X = data, k = c(10, 20), n_sub = nrow(X), method = c("lof", "ldf",
 \arguments{
 \item{X}{An n x p data matrix to compute outlier scores}
 
-\item{k}{Neighborhood size, k must be less than n_sub}
+\item{k}{A vector of neighborhood sizes, k must be less than n_sub}
 
 \item{n_sub}{Subsample size, n_sub must be greater than k.  Usually n_sub = 0.10*n or larger is recommended. Default is n_sub = n}
 
 \item{method}{Character vector specifying the local density-based method(s) to compute. User can specify more than
 one method.  By default all methods are computed}
 
-\item{ldf.param}{Vector of parameters for method LDF, default values are h=1 and c=0.1}
+\item{ldf.param}{Vector of parameters for method LDF. h is the positive bandwidth parameter and c is a positive scaling constant.  Default values are h=1 and c=0.1}
 
-\item{rkof.param}{Vector  parameters for method RKOF, default values are alpha=1, C=1, sig2=1}
+\item{rkof.param}{Vector  parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
+and  sig2 is the variance parameter.  Default values are alpha=1, C=1, sig2=1}
 
-\item{lpdf.param}{Vector of paramters for method LPDF, default values are tmax=1, sigma2=1e-5, and v=1}
+\item{lpdf.param}{Vector of paramters for method LPDF.  cov.type is the covariance parameterization type,
+which users can specifiy as either 'full' or 'diag'.  sigam2 is the positive regularization parameter, tmax is the maximum number of updates, and
+v is the degrees of freedom for the multivariate t distribution.  Default values are cov.type = 'full',tmax=1, sigma2=1e-5, and v=1.}
 
 \item{treetype}{Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'. Refer to documentation for RANN package.
 treetype Character vector specifiying tree method.  Either "kd" or '"d" tree may be specified.  Default is "kd". Refer to documentation for RANN package.}
@@ -60,15 +63,23 @@ LPDR is typically used to detect groups of outliers.
 If a method is not specified then returns NULL
 }
 \details{
-Computes the local density-based outlier scores for input data X referencing a random subsample of the input data X. The subsampled
+Computes the local density-based outlier scores for X referencing a random subsample of the input data X. The subsampled
 data set is constructed by drawning n_sub samples from X without replacement.
 
 Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
-Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution. Outlier scores returned are non-negative
-except for lpde adn lpdr which are log scaled densities (natural log).
+Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution. Outlier scores returned are positive
+except for lpde and lpdr which are log scaled densities (natural log). Score lpdr has shown to be highly sensitive to k.
 
 All kNN computations are carried out using the nn2() function from the RANN package. Multivariate t densities are
-computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.
+computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.  Note: all
+neighborhoods are strickly of size k; therefore, the algorithms for LOP, LDF, and RKOF are not exact implementations, but
+algorithms are similiar for most situation and are equivalent when distance to k-th nearest neighbor is unique.  If there are many
+many duplicate data points, then implementation of algorithms could lead to dramatically different (positive or negative) results than those that allow
+neighborhood sizes larger than k, especially if k is relatively small.  Removing duplicates is recommended before computing
+outlier scores unless there is good reason to keep them.
+
+The algorithm can be used to compute an ensemble of unsupervised outlier scores by using multiple k values
+and iterating over multiple subsampling epochs.
 }
 \examples{
 # 500 x 2 data matrix

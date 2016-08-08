@@ -1,30 +1,42 @@
 
 
 
-#' @title Local Density-Based Outlier Detection using random subsampling with flexible nearest neighbor search.
+#' @title Local Density-Based Outlier Detection with Approximate Nearest Neighbor Search and Subsampling
 #' @param X An n x p data matrix to compute outlier scores
-#' @param k Neighborhood size, k must be less than n_sub
+#' @param k A vector of neighborhood sizes, k must be less than n_sub
 #' @param n_sub Subsample size, n_sub must be greater than k.  Usually n_sub = 0.10*n or larger is recommended. Default is n_sub = n
 #' @param method Character vector specifying the local density-based method(s) to compute. User can specify more than
 #' one method.  By default all methods are computed
-#' @param ldf.param Vector of parameters for method LDF, default values are h=1 and c=0.1
-#' @param rkof.param Vector  parameters for method RKOF, default values are alpha=1, C=1, sig2=1
-#' @param lpdf.param Vector of paramters for method LPDF, default values are tmax=1, sigma2=1e-5, and v=1
 #' @param treetype Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'. Refer to documentation for RANN package.
 #' treetype Character vector specifiying tree method.  Either "kd" or '"d" tree may be specified.  Default is "kd". Refer to documentation for RANN package.
 #' @param eps Error bound.  Default is 0.0 which implies exact nearest neighgour search.  Refer to documentation for RANN package.
 #' @param scale.data Logical value indicating to scale each feature of X using standard noramlization with mean 0 and standard deviation of 1
 #' @param searchtype Character vector specifiying kNN search type. Default value is "standard". Refer to documentation for RANN package.
 #'
-#' @details Computes the local density-based outlier scores for input data X referencing a random subsample of the input data X. The subsampled
+#' @param ldf.param Vector of parameters for method LDF. h is the positive bandwidth parameter and c is a positive scaling constant.  Default values are h=1 and c=0.1
+#' @param rkof.param Vector  parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
+#' and  sig2 is the variance parameter.  Default values are alpha=1, C=1, sig2=1
+#' @param lpdf.param Vector of paramters for method LPDF.  cov.type is the covariance parameterization type,
+#' which users can specifiy as either 'full' or 'diag'.  sigam2 is the positive regularization parameter, tmax is the maximum number of updates, and
+#' v is the degrees of freedom for the multivariate t distribution.  Default values are cov.type = 'full',tmax=1, sigma2=1e-5, and v=1.
+
+#' @details Computes the local density-based outlier scores for X referencing a random subsample of the input data X. The subsampled
 #' data set is constructed by drawning n_sub samples from X without replacement.
 #'
 #' Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
-#' Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution. Outlier scores returned are non-negative
-#' except for lpde adn lpdr which are log scaled densities (natural log).
+#' Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution. Outlier scores returned are positive
+#' except for lpde and lpdr which are log scaled densities (natural log). Score lpdr has shown to be highly sensitive to k.
 #'
 #' All kNN computations are carried out using the nn2() function from the RANN package. Multivariate t densities are
-#' computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.
+#' computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.  Note: all
+#' neighborhoods are strickly of size k; therefore, the algorithms for LOP, LDF, and RKOF are not exact implementations, but
+#' algorithms are similiar for most situation and are equivalent when distance to k-th nearest neighbor is unique.  If there are many
+#' many duplicate data points, then implementation of algorithms could lead to dramatically different (positive or negative) results than those that allow
+#' neighborhood sizes larger than k, especially if k is relatively small.  Removing duplicates is recommended before computing
+#' outlier scores unless there is good reason to keep them.
+#'
+#' The algorithm can be used to compute an ensemble of unsupervised outlier scores by using multiple k values
+#' and iterating over multiple subsampling epochs.
 #'
 #' @return
 #' A list of length 9 with the elements:
@@ -100,6 +112,26 @@ ldbod <- function(X=data, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf',
                   treetype='kd',searchtype='standard',eps=0.0,
                   scale.data=T){
 
+  if(is.null(k))
+    stop('k is missing')
+
+  if(!is.numeric(k))
+    stop('k is not numeric')
+
+  if(!is.numeric(X))
+    stop('the data contains non-numeric data type')
+
+
+  k <- as.integer(k)
+
+  n_sub <- as.integer(n_sub)
+
+  # check max k less than than n_sub-1
+  kmax <-  max(k)
+  len.k <- length(k)
+  if(kmax > n_sub - 1 ){ stop('k is greater than n_sub') }
+
+
   X <- as.matrix(X)
   # number of rows of X
   n <- nrow(X)
@@ -110,22 +142,17 @@ ldbod <- function(X=data, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf',
   if(n_sub>n){ n_sub=n }
   if(n_sub<10){ n_sub=10 }
 
-  # subsample ids .................................................................
+  # subsample ids without replacement
   sub_sample_ids = sample(1:n,n_sub)
 
   # scale X
   if(scale.data){  X <- scale(X) }
 
-  # subsample X, Y will subsample of X .................................................................
+  # subsample X, Y will subsample of X
   Y <-  as.matrix(X[sub_sample_ids,])
 
-  # check max k less than n_sub-1 .................................................................
-  kmax <-  max(k)
-  len.k <- length(k)
-  if(kmax> n_sub-1 ){ stop('k is greater than n_sub') }
 
-  # compute distance (euclidean) matrix between X and Y and returns kNN ids and kNN distances #
-  # compute distance (euclidean) matrix between X and Y and returns kNN ids and kNN distances #
+
   # compute distance (euclidean) matrix between X and Y and returns kNN ids and kNN distances #
   knn <- nn2(data = Y,query = X,k = kmax+1,treetype=treetype,searchtype=searchtype,eps=eps)
 
@@ -134,6 +161,8 @@ ldbod <- function(X=data, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf',
 
   # kNN distance matrix
   knn_dist_matrix <- knn$nn.dists[,-1]
+
+
 
   # define storeage matrix for each outlier score ................
   if('lof'%in%method){
@@ -172,27 +201,28 @@ ldbod <- function(X=data, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf',
 
   # initialize
   ii <- 0
-  ### compute lof and lrd for each k value specified by user .................................................................
+
+  ### compute lof and lrd for each k value specified by user
   for(kk in k){
 
     ii <- ii+1
 
-    # distance to kth nearest neighbor for X to Y .................................................................
+    # distance to kth nearest neighbor for X to Y
     dist_k <- knn_dist_matrix[,kk]
 
 
-    ## Reachability distance matrix if outlier score lrd, lof, lde, or ldf has been specified ..................................
+    ## Reachability distance matrix if outlier score lrd, lof, lde, or ldf has been specified
     if(sum(method%in%c('lof','ldf'))>0){
 
       # arrange dist_k relative to subsample data set
       dist_k_rel_to_test = t(apply(knn_ids[,1:kk],1,function(x)dist_k[sub_sample_ids[x]]))
 
-      # compute reachability distances between X and kNN of X relative to Y
+      # compute reachability distances between X and kNN of X relative to subsample data set
+      # returns reachability distance matrix of size n x kk
       reach_dist_matrix_test <- t(apply( cbind(knn_dist_matrix[,1:kk] , dist_k_rel_to_test),1,function(x){
 
         x1 = x[1:kk]
         x2 = x[(kk+1):(2*kk)]
-        ## reach_dist(x,y) = max( dist(x,y), k_dist(y))
         reach_dist = apply(rbind(x1,x2),2,max)
         return(reach_dist)
 
@@ -204,15 +234,11 @@ ldbod <- function(X=data, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf',
       ############  compute outlier scores lrd and lof  ############
       if('lof'%in%method){
 
-        # compute local reachability density for test points
-        lrd <- 1/(apply(reach_dist_matrix_test,1,mean)+1e-200)
-
-        # compute local outlier factor for test points
-        lof <- apply(knn_ids[,1:kk],1,function(x)mean(lrd[sub_sample_ids[x]]))/lrd
+        lof.scores <- lof.fun(kk,n,p, sub_sample_ids, knn_ids, reach_dist_matrix_test)
 
         # store lof and lrd for each k
-        store_lrd[,ii] <- lrd
-        store_lof[,ii] <- lof
+        store_lrd[,ii] <- lof.scores$lrd
+        store_lof[,ii] <- lof.scores$lof
 
       }# end if statement for lof
 
@@ -221,21 +247,15 @@ ldbod <- function(X=data, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf',
       ############  compute outlier scores lde and ldf  ############
       if('ldf'%in%method){
 
+        # paramters
         h <- ldf.param[names(ldf.param)=='h']
         c <- ldf.param[names(ldf.param)=='c']
-        ## compute local density estimate for test and train data sets
-        lde <- sapply(1:n,function(id)mean(1/((2*pi)^(p/2))*1/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^p*exp(-(.5*reach_dist_matrix_test[id,]^2)/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^2))+1e-200)
 
-        ## compute local density factor for test
-        ldf <- sapply(1:n,function(id){
-          mean.lde = mean(lde[sub_sample_ids[knn_ids[id,1:kk]]])
-          ldf = mean.lde/(lde[id]+c*mean.lde)
-          return(ldf)
-        })
+        ldf.scores <- ldf.fun(kk,n,p, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_test, h,c)
 
         # store lof and lrd for each k
-        store_lde[,ii] <- lde
-        store_ldf[,ii] <- ldf
+        store_lde[,ii] <- ldf.scores$lde
+        store_ldf[,ii] <- ldf.scores$ldf
 
       }# end if statement for ldf
 
@@ -250,34 +270,17 @@ ldbod <- function(X=data, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf',
     ############  compute outlier scores kde and rkof  ############
     if('rkof'%in%method){
 
+      # parameters
       alpha <- rkof.param[names(rkof.param)=='alpha']
       C     <- rkof.param[names(rkof.param)=='C']
       sig2  <- rkof.param[names(rkof.param)=='sig2']
 
-      ## compute kde for test set
-      kde <-  sapply(1:n,function(id){
+      # compute kde, wde, and rkof
+      rkof.scores <- rkof.fun(kk, n,p,knn_ids, sub_sample_ids, dist_k, knn_dist_matrix, alpha, C, sig2)
 
-        mean(1/(2*pi)^(p/2)*1/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)^2*exp(-.5*knn_dist_matrix[id,1:kk]^2/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)))+1e-200
-
-      })
-
-      ## compute wde for test set
-      wde <-  sapply(1:n,function(id){
-
-        weights = exp(-(dist_k[sub_sample_ids[knn_ids[id,1:kk]]]/min(dist_k[sub_sample_ids[knn_ids[id,1:kk]]])-1)^2/(2*sig2))
-
-        weights = weights/sum(weights)
-        wde = sum(weights*kde[sub_sample_ids[knn_ids[id,1:kk]]])
-      })
-
-      ## compute rkof for test set
-      rkof <- wde/kde
-
-
-
-      # store lof and lrd for each k
-      store_kde[,ii] <- kde
-      store_rkof[,ii] <- rkof
+      # store kde and rkof for each k
+      store_kde[,ii] <- rkof.scores$kde
+      store_rkof[,ii] <- rkof.scores$rkof
 
     }# end if statement for rkof
 
@@ -289,97 +292,25 @@ ldbod <- function(X=data, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf',
     ###########  compute outlier scores lpde, lpdf, and lpdr  ############
     if('lpdf'%in%method){
 
+      # parameters
       cov.type<- lpdf.param[names(lpdf.param)=='cov.type']
       tmax   <- as.numeric(lpdf.param[names(lpdf.param)=='tmax'])
       sigma2 <- as.numeric(lpdf.param[names(lpdf.param)=='sigma2'])
       v      <- as.numeric(lpdf.param[names(lpdf.param)=='v'])
 
-      tmax <- tmax+1
-      II <- diag(1,p,p)
-
-      # compute density and weight function, R, for each iteration in 1:tmax
-      store_dens <- matrix(NA,n,tmax)
-      store_R <- matrix(NA,n,tmax)
-
-      for(t in 1:tmax){
-
-        ##compute multivarite t density for test data relative to training data
-        dens <-  sapply(1:n,function(id){
-
-          # test point
-          x = X[id,]
-          # neighborhood to compute weighted location and scatter
-          hood = as.matrix(Y[knn_ids[id,1:kk],])
-
-          # define weights
-          if(t==1){weights = rep(1/kk,kk)}
-          if(t>1){weights  = R[sub_sample_ids[knn_ids[id,1:kk]]] }
-
-          # normalize weights to sum to 1
-          weights <-  weights/sum(weights)
-
-          # comptue weighted sample mean and sample covariance matrix  if cov.type='full'
-          if(cov.type=='full'){
-            covwt   = cov.wt(hood,wt=weights,method='ML')
-            center  = covwt$center
-            scatter = covwt$cov+sigma2*II
-
-          }
-
-          # comptue weighted sample mean and sample covariance matrix if cov.type='diag'
-          if(cov.type=='diag'){
-            center     = apply(hood,2,function(x)sum(weights*x))
-            center.mat = matrix(center,kk,p,byrow=T)
-            vars       = apply((hood-center.mat)^2,2,function(x)sum(weights*x))
-            scatter    = diag(vars,p,p)+sigma2*II
-          }
+      # sub function for computing lpde, lpdf, lpdr
+      lpdf.scores <- lpdf.fun(X,n,p,kk, cov.type, sigma2, tmax, v, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_test)
 
 
-          # compute multivaritae t density with degrees of freedom v
-          density <-  dmt(x,mean=center,S=scatter,df=v)+1e-200
-
-        })
-
-
-        # compute updated weight function, R
-        R <- sapply(1:n,function(id){
-
-          # compute weights
-          weights = 1/(dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^2+1e-20)
-          weights = weights/sum(weights)
-          # comptue ratio of density to weighted neighborhood density
-          log1p(dens[id])/sum(log1p(dens[sub_sample_ids[knn_ids[id,1:kk]]]))
-
-        })
-
-
-        # store all densities and R
-        store_dens[,t] <- dens
-        store_R[,t] <- R
-
-        ## update weight rule
-        if(t>2){
-
-          R <- apply(store_R[,2:t],1,max)
-        }
-
-
-      }### end t loop
-
-      ### compute outlier scores lpde, lpdf, lpdr
-      lpde <- apply(store_dens,1,function(x)log(mean(x[-1])))
-      lpdf <- apply(store_R,1,function(x)mean(x[-1]))
-      lpdr <- lpde - log(store_dens[,1])
-
-      store_lpde[,ii] <- lpde
-      store_lpdf[,ii] <- lpdf
-      store_lpdr[,ii] <- lpdr
+      store_lpde[,ii] <- lpdf.scores$lpde
+      store_lpdf[,ii] <- lpdf.scores$lpdf
+      store_lpdr[,ii] <- lpdf.scores$lpdr
 
     }# end if statement for lpdf
 
 
 
-  }### k loop
+  }# k loop
 
   # return all outlier scores
   return(list(lrd = store_lrd,

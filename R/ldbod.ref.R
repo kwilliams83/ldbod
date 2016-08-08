@@ -101,10 +101,28 @@
 #'
 
 #' @export
-ldbod2 <- function(X =  data, Y = ref.data, k = c(10,20), method = c('lof','ldf','rkof','lpdf'),
+ldbod.ref <- function(X =  data, Y = ref.data, k = c(10,20), method = c('lof','ldf','rkof','lpdf'),
                    ldf.param = c(h = 1, c = 0.1), rkof.param = c(alpha = 1, C = 1, sig2 = 1),
                    lpdf.param=c(cov.type = 'full',sigma2 = 1e-5, tmax=1, v=1),
                    treetype='kd', searchtype='standard',eps=0.0,scale.data=T){
+
+  if(is.null(k))
+    stop('k is missing')
+
+  if(!is.numeric(k))
+    stop('k is not numeric')
+
+  if(!is.numeric(X))
+    stop('the data matrix X contains non-numeric data type')
+
+  if(!is.numeric(Y))
+    stop('the data matrix Y contains non-numeric data type')
+
+
+
+
+
+
   X <- as.matrix(X)
   Y <- as.matrix(Y)
   # number of rows of X
