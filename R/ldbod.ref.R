@@ -152,7 +152,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
   knn_ids <- knn$nn.idx[,-1]
   knn_dist_matrix <- knn$nn.dists[,-1]
 
-  # compute Euclidean distance matrix within test set X returns kNNs ids and kNNs distances
+  # compute distance (euclidean) matrix between Y and Y and returns kNNs ids and kNNs distances
   knn_train <- nn2(data=Y,query=Y,k = kmax+1,treetype=treetype,searchtype=searchtype)
   knn_ids_train <- knn_train$nn.idx[,-1]
   knn_dist_matrix_train <- knn_train$nn.dists[,-1]
@@ -339,6 +339,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
 
       tmax <- tmax+1
       II <- diag(1,p,p)
+      reg <- sigma2*II
 
       # compute density and weight function, R, for each iteration in 1:tmax
       store_dens <- matrix(NA,n,tmax)
@@ -366,7 +367,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
           if(cov.type=='full'){
             covwt   = cov.wt(hood,wt=weights,method='ML')
             center  = covwt$center
-            scatter = covwt$cov+sigma2*II
+            scatter = covwt$cov+reg
 
           }
 
@@ -375,7 +376,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
             center     = apply(hood,2,function(x)sum(weights*x))
             center.mat = matrix(center,kk,p,byrow=T)
             vars       = apply((hood-center.mat)^2,2,function(x)sum(weights*x))
-            scatter    = diag(vars,p,p)+sigma2*II
+            scatter    = diag(vars,p,p)+reg
           }
 
 
@@ -404,7 +405,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
           if(cov.type=='full'){
             covwt   = cov.wt(hood,wt=weights,method='ML')
             center  = covwt$center
-            scatter = covwt$cov+sigma2*II
+            scatter = covwt$cov+reg
 
           }
 
@@ -412,7 +413,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
             center     = apply(hood,2,function(x)sum(weights*x))
             center.mat = matrix(center,kk,p,byrow=T)
             vars       = apply((hood-center.mat)^2,2,function(x)sum(weights*x))
-            scatter    = diag(vars,p,p)+sigma2*II
+            scatter    = diag(vars,p,p)+reg
           }
 
 

@@ -7,19 +7,19 @@
 #' @param n_sub Subsample size, n_sub must be greater than k.  Usually n_sub = 0.10*n or larger is recommended. Default is n_sub = n
 #' @param method Character vector specifying the local density-based method(s) to compute. User can specify more than
 #' one method.  By default all methods are computed
-#' @param treetype Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'. Refer to documentation for RANN package.
-#' treetype Character vector specifiying tree method.  Either "kd" or '"d" tree may be specified.  Default is "kd". Refer to documentation for RANN package.
-#' @param eps Error bound.  Default is 0.0 which implies exact nearest neighgour search.  Refer to documentation for RANN package.
-#' @param scale.data Logical value indicating to scale each feature of X using standard noramlization with mean 0 and standard deviation of 1
-#' @param searchtype Character vector specifiying kNN search type. Default value is "standard". Refer to documentation for RANN package.
-#'
+
 #' @param ldf.param Vector of parameters for method LDF. h is the positive bandwidth parameter and c is a positive scaling constant.  Default values are h=1 and c=0.1
 #' @param rkof.param Vector  parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
 #' and  sig2 is the variance parameter.  Default values are alpha=1, C=1, sig2=1
 #' @param lpdf.param Vector of paramters for method LPDF.  cov.type is the covariance parameterization type,
 #' which users can specifiy as either 'full' or 'diag'.  sigam2 is the positive regularization parameter, tmax is the maximum number of updates, and
 #' v is the degrees of freedom for the multivariate t distribution.  Default values are cov.type = 'full',tmax=1, sigma2=1e-5, and v=1.
-
+#' @param treetype Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'.
+#' Refer to documentation for RANN package.
+#' @param eps Error bound.  Default is 0.0 which implies exact nearest neighgour search.  Refer to documentation for RANN package.
+#' @param searchtype Character vector specifiying kNN search type. Default value is "standard". Refer to documentation for RANN package.
+#' @param scale.data Logical value indicating to scale each feature of X using standard noramlization with mean 0 and standard deviation of 1
+#'
 #' @details Computes the local density-based outlier scores for X referencing a random subsample of the input data X. The subsampled
 #' data set is constructed by drawning n_sub samples from X without replacement.
 #'
@@ -72,7 +72,7 @@
 #' Data Mining, 270-283.
 #'
 #' K. Williams (2016).  Local parametric density-based outlier deteciton and ensemble learning with application to malware detection. PhD dissertation,
-#' University of Texas at San Antonio.
+#' The University of Texas at San Antonio. Unpublished manuscript
 #' @examples
 #' # 500 x 2 data matrix
 #' X <- matrix(rnorm(1000),500,2)
