@@ -4,11 +4,10 @@
 \alias{ldbod}
 \title{Local Density-Based Outlier Detection with Approximate Nearest Neighbor Search and Subsampling}
 \usage{
-ldbod(X = data, k = c(10, 20), n_sub = nrow(X), method = c("lof", "ldf",
-  "rkof", "lpdf"), ldf.param = c(h = 1, c = 0.1), rkof.param = c(alpha = 1,
-  C = 1, sig2 = 1), lpdf.param = c(cov.type = "full", sigma2 = 1e-05, tmax =
-  1, v = 1), treetype = "kd", searchtype = "standard", eps = 0,
-  scale.data = T)
+ldbod(X, k = c(10, 20), n_sub = nrow(X), method = c("lof", "ldf", "rkof",
+  "lpdf"), ldf.param = c(h = 1, c = 0.1), rkof.param = c(alpha = 1, C = 1,
+  sig2 = 1), lpdf.param = c(cov.type = "full", sigma2 = 1e-05, tmax = 1, v =
+  1), treetype = "kd", searchtype = "standard", eps = 0, scale.data = T)
 }
 \arguments{
 \item{X}{An n x p data matrix to compute outlier scores}

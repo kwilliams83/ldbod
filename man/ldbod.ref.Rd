@@ -4,11 +4,10 @@
 \alias{ldbod.ref}
 \title{Local Density-Based Outlier Detection with Approximate Nearest Neighbor and Reference Data}
 \usage{
-ldbod.ref(X = data, Y = ref.data, k = c(10, 20), method = c("lof",
-  "ldf", "rkof", "lpdf"), ldf.param = c(h = 1, c = 0.1),
-  rkof.param = c(alpha = 1, C = 1, sig2 = 1), lpdf.param = c(cov.type =
-  "full", sigma2 = 1e-05, tmax = 1, v = 1), treetype = "kd",
-  searchtype = "standard", eps = 0, scale.data = T)
+ldbod.ref(X, Y, k = c(10, 20), method = c("lof", "ldf", "rkof", "lpdf"),
+  ldf.param = c(h = 1, c = 0.1), rkof.param = c(alpha = 1, C = 1, sig2 = 1),
+  lpdf.param = c(cov.type = "full", sigma2 = 1e-05, tmax = 1, v = 1),
+  treetype = "kd", searchtype = "standard", eps = 0, scale.data = T)
 }
 \arguments{
 \item{X}{An n x p data matrix to compute outlier scores}
@@ -22,12 +21,11 @@ one method.  By default all methods are computed}
 
 \item{ldf.param}{Vector of parameters for method LDF, default values are h=1 and c=0.1}
 
-\item{rkof.param}{Vector  parameters for method RKOF, default values are alpha=1, C=1, sig2=1}
+\item{rkof.param}{Vector  of parameters for method RKOF, default values are alpha=1, C=1, sig2=1}
 
 \item{lpdf.param}{Vector of paramters for method LPDF, default values are tmax=1, sigma2=1e-5, and v=1}
 
-\item{treetype}{Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'. Refer to documentation for RANN package.
-treetype Character vector specifiying tree method.  Either "kd" or '"d" tree may be specified.  Default is "kd". Refer to documentation for RANN package.}
+\item{treetype}{Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'. Refer to documentation for RANN package.}
 
 \item{searchtype}{Character vector specifiying kNN search type. Default value is "standard". Refer to documentation for RANN package.}
 
@@ -59,13 +57,15 @@ lpdr   --An n x length(k) matrix where each column vector represents outlier sco
 If a method is not specified then returns NULL
 }
 \details{
-Computes the local density-based outlier scores for input data X referencing data Y.  For semi-supervised learning Y would be a set of "normal"
+Computes local density-based outlier scores for input data X referencing data Y.  For semi-supervised outlier detection Y would be a set of "normal"
 reference points; otherwise, Y can be any other set of reference points of interest. This allows users the flexibility to reference other data sets besides X or
 a subset of X.
-
 Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
 Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution.
-Outlier scores returned are non-negative except for lpde adn lpdr which are log scaled densities (natural log).
+Outlier scores returned are non-negative except for lpde adn lpdr which are log scaled densities (natural log). Note: Outlier score
+lpdr is strictly designed for unsupervised outlier detection and should not be used in the semi-supervised setting.
+Refer to references for
+more details about each method.
 
 All kNN computations are carried out using the nn2() function from the RANN package. Multivariate t densities are
 computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.  Note: all
@@ -81,13 +81,13 @@ and multiple iterations of reference data.
 \examples{
 # 500 x 2 data matrix
 X <- matrix(rnorm(1000),500,2)
-
+Y <- X
 # five outliers
 outliers <- matrix(c(rnorm(2,20),rnorm(2,-12),rnorm(2,-8),rnorm(2,-5),rnorm(2,9)),5,2)
  X <- rbind(X,outliers)
 
 # compute outlier scores without subsampling for all methods
-scores <- ldbod(X, k=50)
+scores <- ldbod.ref(X,Y, k=50)
 
 head(scores$lrd); head(scores$rkof)
 
@@ -101,7 +101,7 @@ points(X[order(scores$lpde,decreasing=F)[1:5],],col=2)
 
 
  # compute outlier scores for k= 10,20 with 10\% subsampling for methods 'lof' and 'lpdf'
-scores <- ldbod(X, k = c(10,20),n_sub = 0.10*nrow(X), method = c('lof','lpdf'))
+scores <- ldbod.ref(X,Y k = c(10,20),n_sub = 0.10*nrow(X), method = c('lof','lpdf'))
 
 # plot data and highlight top 5 outliers retuned by lof for k=20
 plot(X)

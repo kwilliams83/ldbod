@@ -2,4 +2,3 @@
 
 export(ldbod)
 export(ldbod.ref)
-export(ldbod2)

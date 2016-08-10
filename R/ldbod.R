@@ -105,7 +105,7 @@
 #'
 #'
 #' @export
-ldbod <- function(X=data, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf','rkof','lpdf'),
+ldbod <- function(X, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf','rkof','lpdf'),
                   ldf.param = c(h = 1, c = 0.1),
                   rkof.param = c(alpha = 1, C = 1, sig2 = 1),
                   lpdf.param = c(cov.type = 'full',sigma2 = 1e-5, tmax=1, v=1),
