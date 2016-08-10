@@ -131,9 +131,9 @@ lpdf.fun <- function(X,n,p,kk, cov.type, sigma2, tmax, v, knn_ids, sub_sample_id
 
       # comptue weighted sample mean and sample covariance matrix if cov.type='diag'
       if(cov.type=='diag'){
-        center     = apply(hood,2,function(x)sum(weights*x))
+        center     = colSums(weights * hood)
         center.mat = matrix(center,kk,p,byrow=T)
-        vars       = apply((hood-center.mat)^2,2,function(x)sum(weights*x))
+        vars       = colSums(weights*(hood-center.mat)^2)
         scatter    = diag(vars,p,p)+reg
       }
 

@@ -373,9 +373,9 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
 
           # comptue weighted sample mean and sample covariance matrix if cov.type='diag'
           if(cov.type=='diag'){
-            center     = apply(hood,2,function(x)sum(weights*x))
+            center     = colSums(weights * hood)
             center.mat = matrix(center,kk,p,byrow=T)
-            vars       = apply((hood-center.mat)^2,2,function(x)sum(weights*x))
+            vars       = colSums(weights*(hood-center.mat)^2)
             scatter    = diag(vars,p,p)+reg
           }
 
@@ -410,9 +410,9 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
           }
 
           if(cov.type=='diag'){
-            center     = apply(hood,2,function(x)sum(weights*x))
+            center     = colSums(weights * hood)
             center.mat = matrix(center,kk,p,byrow=T)
-            vars       = apply((hood-center.mat)^2,2,function(x)sum(weights*x))
+            vars       = colSums(weights*(hood-center.mat)^2)
             scatter    = diag(vars,p,p)+reg
           }
 
