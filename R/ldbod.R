@@ -301,7 +301,7 @@ ldbod <- function(X, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf','rkof
       v      <- as.numeric(lpdf.param[names(lpdf.param)=='v'])
 
       # sub function for computing lpde, lpdf, lpdr
-      lpdf.scores <- lpdf.fun(X,n,p,kk, cov.type, sigma2, tmax, v, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_test)
+      lpdf.scores <- lpdf.fun(X,Y,n,p,kk, cov.type, sigma2, tmax, v, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_test)
 
 
       store_lpde[,ii] <- lpdf.scores$lpde

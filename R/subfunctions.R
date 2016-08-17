@@ -88,7 +88,7 @@ rkof.fun <- function(kk,n,p,knn_ids, sub_sample_ids, dist_k, knn_dist_matrix,alp
 
 
 # sub function for computing lpde, lpdf, lpdr
-lpdf.fun <- function(X,n,p,kk, cov.type, sigma2, tmax, v, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_test)
+lpdf.fun <- function(X,Y,n,p,kk, cov.type, sigma2, tmax, v, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_test)
 {
 
 

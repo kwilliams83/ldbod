@@ -24,7 +24,6 @@ lof.ref.fun <- function(kk, knn_ids,reach_dist_matrix_test,reach_dist_matrix_tra
 
 
 
-
 ## returns lde and ldf
 ldf.ref.fun <- function(n,m,p,kk,knn_ids,knn_ids_train,dist_k_train,reach_dist_matrix_test,reach_dist_matrix_train,h,c){
 
