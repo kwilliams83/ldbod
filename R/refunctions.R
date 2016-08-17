@@ -81,6 +81,7 @@ rkof.ref.fun <- function(n,m,p,kk,knn_ids, knn_ids_train, dist_k_train, knn_dist
     weights = exp(-(dist_k_train[knn_ids[id,1:kk]]/min(dist_k_train[knn_ids[id,1:kk]])-1)^2/(2*sig2))
 
     weights = weights/sum(weights)
+
     wde = sum(weights*kde_train[knn_ids[id,1:kk]])
   })
 
@@ -174,6 +175,7 @@ lpdf.ref.fun <- function(X, Y, n, m, p, kk, knn_ids, knn_ids_train, dist_k_train
 
       }
 
+      # compute location and covariance matrix if cov.type='diag'
       if(cov.type=='diag'){
         center     = colSums(weights * hood)
         center.mat = matrix(center,kk,p,byrow=T)
