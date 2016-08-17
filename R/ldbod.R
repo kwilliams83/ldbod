@@ -2,6 +2,7 @@
 
 
 #' @title Local Density-Based Outlier Detection with Approximate Nearest Neighbor Search and Subsampling
+#' @description  This function computes local density-based outlier scores for input data.
 #' @param X An n x p data matrix to compute outlier scores
 #' @param k A vector of neighborhood sizes, k must be less than n_sub
 #' @param n_sub Subsample size, n_sub must be greater than k.  Usually n_sub = 0.10*n or larger is recommended. Default is n_sub = n
@@ -105,6 +106,7 @@
 #'
 #'
 #' @export
+#'
 ldbod <- function(X, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf','rkof','lpdf'),
                   ldf.param = c(h = 1, c = 0.1),
                   rkof.param = c(alpha = 1, C = 1, sig2 = 1),

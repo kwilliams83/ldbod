@@ -24,14 +24,14 @@ lof.fun <- function(kk, n,p,sub_sample_ids, knn_ids, reach_dist_matrix_test)
 
 
 
-
 # sub function for computing lde and ldf
 ldf.fun <- function(kk,n,p, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_test, h,c)
 {
 
 
   lde <- sapply(1:n,function(id){
-    mean(1/((2*pi)^(p/2))*1/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^p*exp(-(.5*reach_dist_matrix_test[id,]^2)/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^2))+1e-200
+    mean(1/((2*pi)^(p/2))*1/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^p*
+           exp(-(.5*reach_dist_matrix_test[id,]^2)/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^2))+1e-200
   })
 
   ldf <- sapply(1:n,function(id){
@@ -55,7 +55,8 @@ rkof.fun <- function(kk,n,p,knn_ids, sub_sample_ids, dist_k, knn_dist_matrix,alp
   ## compute kde for each point in X
   kde <-  sapply(1:n,function(id){
 
-    mean(1/(2*pi)^(p/2)*1/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)^2*exp(-.5*knn_dist_matrix[id,1:kk]^2/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)))+1e-200
+    mean(1/(2*pi)^(p/2)*1/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)^2*
+           exp(-.5*knn_dist_matrix[id,1:kk]^2/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)))+1e-200
 
   })
 

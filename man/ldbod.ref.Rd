@@ -56,6 +56,9 @@ lpdr   --An n x length(k) matrix where each column vector represents outlier sco
 
 If a method is not specified then returns NULL
 }
+\description{
+This function computes local density-based outlier scores for input data and user specified reference set.
+}
 \details{
 Computes local density-based outlier scores for input data X referencing data Y.  For semi-supervised outlier detection Y would be a set of "normal"
 reference points; otherwise, Y can be any other set of reference points of interest. This allows users the flexibility to reference other data sets besides X or
@@ -101,7 +104,7 @@ points(X[order(scores$lpde,decreasing=F)[1:5],],col=2)
 
 
  # compute outlier scores for k= 10,20 with 10\% subsampling for methods 'lof' and 'lpdf'
-scores <- ldbod.ref(X,Y k = c(10,20),n_sub = 0.10*nrow(X), method = c('lof','lpdf'))
+scores <- ldbod.ref(X,Y, k = c(10,20), method = c('lof','lpdf'))
 
 # plot data and highlight top 5 outliers retuned by lof for k=20
 plot(X)

@@ -28,8 +28,8 @@ and  sig2 is the variance parameter.  Default values are alpha=1, C=1, sig2=1}
 which users can specifiy as either 'full' or 'diag'.  sigam2 is the positive regularization parameter, tmax is the maximum number of updates, and
 v is the degrees of freedom for the multivariate t distribution.  Default values are cov.type = 'full',tmax=1, sigma2=1e-5, and v=1.}
 
-\item{treetype}{Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'. Refer to documentation for RANN package.
-treetype Character vector specifiying tree method.  Either "kd" or '"d" tree may be specified.  Default is "kd". Refer to documentation for RANN package.}
+\item{treetype}{Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'.
+Refer to documentation for RANN package.}
 
 \item{searchtype}{Character vector specifiying kNN search type. Default value is "standard". Refer to documentation for RANN package.}
 
@@ -60,6 +60,9 @@ lpdr   --An n x length(k) matrix where each column vector represents the local p
 LPDR is typically used to detect groups of outliers.
 
 If a method is not specified then returns NULL
+}
+\description{
+This function computes local density-based outlier scores for input data.
 }
 \details{
 Computes the local density-based outlier scores for X referencing a random subsample of the input data X. The subsampled
@@ -123,6 +126,6 @@ J. Gao, W. Hu, Z. Zhang, X. Zhang, and O. Wu (2011). RKOF: Robust kernel-based l
 Data Mining, 270-283.
 
 K. Williams (2016).  Local parametric density-based outlier deteciton and ensemble learning with application to malware detection. PhD dissertation,
-University of Texas at San Antonio.
+The University of Texas at San Antonio. Unpublished manuscript
 }
 

@@ -3,11 +3,11 @@ Type: Package
 Title: Local Density-Based Outlier Detection
 Version: 0.1.0
 Author: Kristopher Williams
-Maintainer: kristopher.williams83@gmail.com
+Maintainer: <kristopher.williams83@gmail.com>
 Description: Flexible procedure for computing local density-based outlier scores for ranking outliers.  Both exact and approximate nearest
     neighbor search can be implemented, while also accomodating multiple k values and four different local density-based methods.  See
     RANN package documentation for details on nearest neighbor search procedure.  It allows for subsampling of input data or a user specified reference data set to compute outlier scores against,
-    so both unsupervised and semi-supervised outlier detection can be done.
+    so both unsupervised and semi-supervised outlier detection can be do
 Depends:
     RANN,
     mnormt
