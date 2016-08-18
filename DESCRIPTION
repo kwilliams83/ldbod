@@ -10,7 +10,7 @@ Description: Compute local density-based outlier scores for ranking outliers wit
 Depends:
     RANN,
     mnormt
-License: MIT
+License: GPL
 LazyData: TRUE
 RoxygenNote: 5.0.1
 https://github.com/kt1williams/ldbod
