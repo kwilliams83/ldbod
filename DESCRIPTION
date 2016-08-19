@@ -4,13 +4,13 @@ Title: Local Density-Based Outlier Detection
 Version: 0.1.0
 Author: Kristopher Williams
 Maintainer: <kristopher.williams83@gmail.com>
-Description: Flexible procedures to compute local density-based outlier scores for ranking outliers.  Both exact and approximate nearest
-    neighbor search can be implemented, while also accomodating multiple k values and four different local density-based methods.
-    It allows for referencing a random subsample of input data or a user specified reference data set to compute outlier scores against,
-    so both unsupervised and semi-supervised outlier detection can be implemented.
-Depends:
-    RANN,
-    mnormt
+Description: Flexible procedures to compute local density-based outlier scores for ranking outliers.
+  Both exact and approximate nearest neighbor search can be implemented, while also accomodating multiple
+  k values and four different local density-based methods. It allows for referencing a random subsample
+  of input data or a user specified reference data set to compute outlier scores against, so both
+  unsupervised and semi-supervised outlier detection can be implemented.
+Depends: R (>= 3.1.0)
+Imports: stats, RANN, mnormt
 License: GPL-3
 LazyData: TRUE
 RoxygenNote: 5.0.1

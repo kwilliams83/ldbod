@@ -103,7 +103,6 @@
 #' plot(X)
 #' points(X[order(scores$lof[,2],decreasing=TRUE)[1:5],],col=2)
 #'
-#' scores <- ldbod(X=rnorm(100),k=20)
 #'
 #'
 #'
@@ -133,6 +132,9 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
     stop('X must be of class matrix')
 
   k <- as.integer(k)
+
+  if(is.null(nsub))
+    (nsub <- nrow(X))
 
   nsub <- as.integer(nsub)
 
