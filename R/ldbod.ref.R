@@ -1,23 +1,26 @@
 
 
 
-#' @title Local Density-Based Outlier Detection with Approximate Nearest Neighbor and Reference Data
+#' @title Local Density-Based Outlier Detection using Reference Data with Approximate Nearest Neighbor Search
 #' @description  This function computes local density-based outlier scores for input data and user specified reference set.
 #' @param X An n x p data matrix to compute outlier scores
 #' @param Y An m x p reference data matrix.
 #' @param k A vector of neighborhood sizes, k must be less than m.
 #' @param method Character vector specifying the local density-based method(s) to compute. User can specify more than
 #' one method.  By default all methods are computed
-#' @param ldf.param Vector of parameters for method LDF, default values are h=1 and c=0.1
-#' @param rkof.param Vector  of parameters for method RKOF, default values are alpha=1, C=1, sig2=1
-#' @param lpdf.param Vector of paramters for method LPDF, default values are tmax=1, sigma2=1e-5, and v=1
-#' @param treetype Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'. Refer to documentation for RANN package.
-#' @param searchtype Character vector specifiying kNN search type. Default value is "standard". Refer to documentation for RANN package.
+#' @param ldf.param Vector of parameters for method LDF. h is the positive bandwidth parameter and c is a positive scaling constant.  Default values are h=1 and c=0.1
+#' @param rkof.param Vector  parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
+#' and  sig2 is the variance parameter.  Default values are alpha=1, C=1, sig2=1
+#' @param lpdf.param Vector of paramters for method LPDF.  cov.type is the covariance parameterization type,
+#' which users can specifiy as either 'full' or 'diag'.  sigma2 is the positive regularization parameter, tmax is the maximum number of updates, and
+#' v is the degrees of freedom for the multivariate t distribution.  Default values are cov.type = 'full',tmax=1, sigma2=1e-5, and v=1.
+#' @param treetype Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'.
+#' Refer to documentation for RANN package.
 #' @param eps Error bound.  Default is 0.0 which implies exact nearest neighgour search.  Refer to documentation for RANN package.
-#' @param scale.data Logical value indicating to scale each feature of X using standard noramlization with mean 0 and standard deviation of 1
+#' @param searchtype Character vector specifiying kNN search type. Default value is "standard". Refer to documentation for RANN package.
+#' @param scale.data Logical value indicating to scale each feature of X using standard noramlization based on mean and standard deviation for features of Y.
 #'
-#'
-#' @details Computes local density-based outlier scores for input data X referencing data Y.  For semi-supervised outlier detection Y would be a set of "normal"
+#' @details Computes local density-based outlier scores for input data, X, referencing data Y.  For semi-supervised outlier detection Y would be a set of "normal"
 #' reference points; otherwise, Y can be any other set of reference points of interest. This allows users the flexibility to reference other data sets besides X or
 #' a subset of X.
 #' Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
@@ -70,7 +73,7 @@
 #' J. Gao, W. Hu, Z. Zhang, X. Zhang, and O. Wu (2011). RKOF: Robust kernel-based local outlier detection. In Proc. of Advances in Knowledge Discovery and
 #' Data Mining, 270-283.
 #'
-#' K. Williams (2016).  Local parametric density-based outlier deteciton and ensemble learning with application to malware detection. PhD dissertation,
+#' K. Williams (2016).  Local parametric density-based outlier deteciton and ensemble learning with applications to malware detection. PhD dissertation,
 #' University of Texas at San Antonio.
 #' @examples
 #' # 500 x 2 data matrix
@@ -80,7 +83,7 @@
 #' outliers <- matrix(c(rnorm(2,20),rnorm(2,-12),rnorm(2,-8),rnorm(2,-5),rnorm(2,9)),5,2)
 #'  X <- rbind(X,outliers)
 #'
-#'# compute outlier scores without subsampling for all methods
+#'# compute outlier scores referencing Y for all methods
 #' scores <- ldbod.ref(X,Y, k=50)
 #'
 #' head(scores$lrd); head(scores$rkof)
@@ -94,7 +97,7 @@
 #' points(X[order(scores$lpde,decreasing=FALSE)[1:5],],col=2)
 #'
 #'
-#'  # compute outlier scores for k= 10,20 with 10% subsampling for methods 'lof' and 'lpdf'
+#'  # compute outlier scores for k= 10,20 referencing Y for methods 'lof' and 'lpdf'
 #' scores <- ldbod.ref(X,Y, k = c(10,20), method = c('lof','lpdf'))
 #'
 #' # plot data and highlight top 5 outliers retuned by lof for k=20
@@ -108,33 +111,29 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
                       ldf.param = c(h = 1, c = 0.1),
                       rkof.param = c(alpha = 1, C = 1, sig2 = 1),
                       lpdf.param = c(cov.type = 'full', sigma2 = 1e-5, tmax=1, v=1),
-                      treetype='kd', searchtype='standard',eps=0.0,scale.data=TRUE){
+                      treetype='kd', searchtype='standard',eps=0.0,
+                      scale.data=TRUE)
+{
 
-  if(is.null(k))
-    stop('k is missing')
+  if(is.null(k)) stop('k is missing')
 
-  if(!is.numeric(k))
-    stop('k is not numeric')
+  if(!is.numeric(k)) stop('k is not numeric')
 
   # coerce X and Y to class matrix
   X <- as.matrix(X)
   Y <- as.matrix(Y)
 
-  if(!is.numeric(X))
-    stop('the data matrix X contains non-numeric data type')
+  if(!is.numeric(X)) stop('the data matrix X contains non-numeric data type')
 
-  if(!is.numeric(Y))
-    stop('the data matrix Y contains non-numeric data type')
+  if(!is.numeric(Y)) stop('the data matrix Y contains non-numeric data type')
 
 
 
 
-  if(!is.matrix(X))
-    stop('X must be of class matrix')
+  if(!is.matrix(X)) stop('X must be of class matrix')
 
 
-  if(!is.matrix(Y))
-    stop('Y must be of class matrix')
+  if(!is.matrix(Y)) stop('Y must be of class matrix')
 
 
 
@@ -152,16 +151,18 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
 
   # scale X by mean and sd of features of Y
   if(scale.data){
+
     scale.y <- apply(Y,2,function(x)c(mean(x),sd(x)))
-    Y <- scale(Y)
-    X <- scale(X,center=scale.y[1,],scale=scale.y[2,])
+    Y       <- scale(Y)
+    X       <- scale(X,center=scale.y[1,],scale=scale.y[2,])
+
   }
 
   # check max k less than m
-  kmax <-  max(k)
+  kmax  <-  max(k)
   len.k <- length(k)
-  if(kmax > m-1 ){stop('k is greater than size of reference set Y')}
-  if(min(k) < 2 ){ stop('k must be greater than 1') }
+  if(kmax > m-1 ) stop('k is greater than size of reference set Y')
+  if(min(k) < 2 ) stop('k must be greater than 1')
 
   # compute distance (euclidean) matrix between X and Y and returns kNNs ids and kNNs distances
   knn <- nn2(data=Y,query=X,k = kmax+1,treetype=treetype,searchtype=searchtype)
