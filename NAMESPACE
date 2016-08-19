@@ -2,3 +2,6 @@
 
 export(ldbod)
 export(ldbod.ref)
+importFrom("stats", "cov.wt", "sd")
+importFrom("RANN", "nn2")
+importFrom("mnormt","dmt")
