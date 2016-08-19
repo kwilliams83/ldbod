@@ -4,8 +4,8 @@
 #' @title Local Density-Based Outlier Detection with Approximate Nearest Neighbor Search and Subsampling
 #' @description  This function computes local density-based outlier scores for input data.
 #' @param X An n x p data matrix to compute outlier scores
-#' @param k A vector of neighborhood sizes, k must be less than n_sub
-#' @param n_sub Subsample size, n_sub must be greater than k.  Usually n_sub = 0.10*n or larger is recommended. Default is n_sub = n
+#' @param k A vector of neighborhood sizes, k must be less than nsub
+#' @param nsub Subsample size, nsub must be greater than k.  Usually nsub = 0.10*n or larger is recommended. Default is nsub = n
 #' @param method Character vector specifying the local density-based method(s) to compute. User can specify more than
 #' one method.  By default all methods are computed
 
@@ -22,7 +22,7 @@
 #' @param scale.data Logical value indicating to scale each feature of X using standard noramlization with mean 0 and standard deviation of 1
 #'
 #' @details Computes the local density-based outlier scores for X referencing a random subsample of the input data X. The subsampled
-#' data set is constructed by drawning n_sub samples from X without replacement.
+#' data set is constructed by drawning nsub samples from X without replacement.
 #'
 #' Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
 #' Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution. Outlier scores returned are positive
@@ -89,30 +89,32 @@
 #'
 #' # plot data and highlight top 5 outliers retured by lof
 #' plot(X)
-#' points(X[order(scores$lof,decreasing=T)[1:5],],col=2)
+#' points(X[order(scores$lof,decreasing=TRUE)[1:5],],col=2)
 #'
 #' # plot data and highlight top 5 outliers retured by outlier score lpde
 #' plot(X)
-#' points(X[order(scores$lpde,decreasing=F)[1:5],],col=2)
+#' points(X[order(scores$lpde,decreasing=FALSE)[1:5],],col=2)
 #'
 #'
 #'# compute outlier scores for k= 10,20 with 10% subsampling for methods 'lof' and 'lpdf'
-#' scores <- ldbod(X, k = c(10,20),n_sub = 0.10*nrow(X), method = c('lof','lpdf'))
+#' scores <- ldbod(X, k = c(10,20),nsub = 0.10*nrow(X), method = c('lof','lpdf'))
 #'
 #' # plot data and highlight top 5 outliers retuned by lof for k=20
 #' plot(X)
-#' points(X[order(scores$lof[,2],decreasing=T)[1:5],],col=2)
+#' points(X[order(scores$lof[,2],decreasing=TRUE)[1:5],],col=2)
+#'
+#' scores <- ldbod(X=rnorm(100),k=20)
 #'
 #'
 #'
 #' @export
 #'
-ldbod <- function(X, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf','rkof','lpdf'),
+ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof','lpdf'),
                   ldf.param = c(h = 1, c = 0.1),
                   rkof.param = c(alpha = 1, C = 1, sig2 = 1),
                   lpdf.param = c(cov.type = 'full',sigma2 = 1e-5, tmax=1, v=1),
                   treetype='kd',searchtype='standard',eps=0.0,
-                  scale.data=T){
+                  scale.data=TRUE){
 
   if(is.null(k))
     stop('k is missing')
@@ -120,32 +122,46 @@ ldbod <- function(X, k = c(10,20), n_sub = nrow(X), method = c('lof','ldf','rkof
   if(!is.numeric(k))
     stop('k is not numeric')
 
-  if(!is.numeric(X))
-    stop('the data contains non-numeric data type')
 
+  # coerce X to class matrix
+  X <- as.matrix(X)
+
+  if(!is.numeric(X))
+    stop('X contains non-numeric data type')
+
+  if(!is.matrix(X))
+    stop('X must be of class matrix')
 
   k <- as.integer(k)
 
-  n_sub <- as.integer(n_sub)
+  nsub <- as.integer(nsub)
 
-  # check max k less than than n_sub-1
+  # check max k less than than nsub-1
   kmax <-  max(k)
   len.k <- length(k)
-  if(kmax > n_sub - 1 ){ stop('k is greater than n_sub') }
 
 
-  X <- as.matrix(X)
+  if(kmax > nsub - 1 )
+    stop('k is greater than nsub')
+
+  if(min(k) < 2 )
+    stop('k must be greater than 1')
+
+
+
+
+
   # number of rows of X
   n <- nrow(X)
   # number of columns of X
   p <- ncol(X)
 
-  # check that n_sub <= n
-  if(n_sub>n){ n_sub=n }
-  if(n_sub<10){ n_sub=10 }
+  # check that nsub <= n
+  if(nsub>n){ nsub=n }
+  if(nsub<10){ nsub=10 }
 
   # subsample ids without replacement
-  sub_sample_ids = sample(1:n,n_sub)
+  sub_sample_ids = sample(1:n,nsub)
 
   # scale X
   if(scale.data){  X <- scale(X) }

@@ -7,7 +7,7 @@
 ldbod.ref(X, Y, k = c(10, 20), method = c("lof", "ldf", "rkof", "lpdf"),
   ldf.param = c(h = 1, c = 0.1), rkof.param = c(alpha = 1, C = 1, sig2 = 1),
   lpdf.param = c(cov.type = "full", sigma2 = 1e-05, tmax = 1, v = 1),
-  treetype = "kd", searchtype = "standard", eps = 0, scale.data = T)
+  treetype = "kd", searchtype = "standard", eps = 0, scale.data = TRUE)
 }
 \arguments{
 \item{X}{An n x p data matrix to compute outlier scores}
@@ -96,11 +96,11 @@ head(scores$lrd); head(scores$rkof)
 
 # plot data and highlight top 5 outliers retured by lof
 plot(X)
-points(X[order(scores$lof,decreasing=T)[1:5],],col=2)
+points(X[order(scores$lof,decreasing=TRUE)[1:5],],col=2)
 
 # plot data and highlight top 5 outliers retured by outlier score lpde
 plot(X)
-points(X[order(scores$lpde,decreasing=F)[1:5],],col=2)
+points(X[order(scores$lpde,decreasing=FALSE)[1:5],],col=2)
 
 
  # compute outlier scores for k= 10,20 with 10\% subsampling for methods 'lof' and 'lpdf'
@@ -108,7 +108,7 @@ scores <- ldbod.ref(X,Y, k = c(10,20), method = c('lof','lpdf'))
 
 # plot data and highlight top 5 outliers retuned by lof for k=20
 plot(X)
-points(X[order(scores$lof[,2],decreasing=T)[1:5],],col=2)
+points(X[order(scores$lof[,2],decreasing=TRUE)[1:5],],col=2)
 
 
 }

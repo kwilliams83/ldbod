@@ -4,17 +4,18 @@
 \alias{ldbod}
 \title{Local Density-Based Outlier Detection with Approximate Nearest Neighbor Search and Subsampling}
 \usage{
-ldbod(X, k = c(10, 20), n_sub = nrow(X), method = c("lof", "ldf", "rkof",
-  "lpdf"), ldf.param = c(h = 1, c = 0.1), rkof.param = c(alpha = 1, C = 1,
-  sig2 = 1), lpdf.param = c(cov.type = "full", sigma2 = 1e-05, tmax = 1, v =
-  1), treetype = "kd", searchtype = "standard", eps = 0, scale.data = T)
+ldbod(X, k = c(10, 20), nsub = nrow(as.matrix(X)), method = c("lof",
+  "ldf", "rkof", "lpdf"), ldf.param = c(h = 1, c = 0.1),
+  rkof.param = c(alpha = 1, C = 1, sig2 = 1), lpdf.param = c(cov.type =
+  "full", sigma2 = 1e-05, tmax = 1, v = 1), treetype = "kd",
+  searchtype = "standard", eps = 0, scale.data = TRUE)
 }
 \arguments{
 \item{X}{An n x p data matrix to compute outlier scores}
 
-\item{k}{A vector of neighborhood sizes, k must be less than n_sub}
+\item{k}{A vector of neighborhood sizes, k must be less than nsub}
 
-\item{n_sub}{Subsample size, n_sub must be greater than k.  Usually n_sub = 0.10*n or larger is recommended. Default is n_sub = n}
+\item{nsub}{Subsample size, nsub must be greater than k.  Usually nsub = 0.10*n or larger is recommended. Default is nsub = n}
 
 \item{method}{Character vector specifying the local density-based method(s) to compute. User can specify more than
 one method.  By default all methods are computed}
@@ -66,7 +67,7 @@ This function computes local density-based outlier scores for input data.
 }
 \details{
 Computes the local density-based outlier scores for X referencing a random subsample of the input data X. The subsampled
-data set is constructed by drawning n_sub samples from X without replacement.
+data set is constructed by drawning nsub samples from X without replacement.
 
 Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
 Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution. Outlier scores returned are positive
@@ -98,19 +99,21 @@ head(scores$lrd); head(scores$rkof)
 
 # plot data and highlight top 5 outliers retured by lof
 plot(X)
-points(X[order(scores$lof,decreasing=T)[1:5],],col=2)
+points(X[order(scores$lof,decreasing=TRUE)[1:5],],col=2)
 
 # plot data and highlight top 5 outliers retured by outlier score lpde
 plot(X)
-points(X[order(scores$lpde,decreasing=F)[1:5],],col=2)
+points(X[order(scores$lpde,decreasing=FALSE)[1:5],],col=2)
 
 
 # compute outlier scores for k= 10,20 with 10\% subsampling for methods 'lof' and 'lpdf'
-scores <- ldbod(X, k = c(10,20),n_sub = 0.10*nrow(X), method = c('lof','lpdf'))
+scores <- ldbod(X, k = c(10,20),nsub = 0.10*nrow(X), method = c('lof','lpdf'))
 
 # plot data and highlight top 5 outliers retuned by lof for k=20
 plot(X)
-points(X[order(scores$lof[,2],decreasing=T)[1:5],],col=2)
+points(X[order(scores$lof[,2],decreasing=TRUE)[1:5],],col=2)
+
+scores <- ldbod(X=rnorm(100),k=20)
 
 
 

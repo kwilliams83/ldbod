@@ -87,11 +87,11 @@
 #'
 #' # plot data and highlight top 5 outliers retured by lof
 #' plot(X)
-#' points(X[order(scores$lof,decreasing=T)[1:5],],col=2)
+#' points(X[order(scores$lof,decreasing=TRUE)[1:5],],col=2)
 #'
 #' # plot data and highlight top 5 outliers retured by outlier score lpde
 #' plot(X)
-#' points(X[order(scores$lpde,decreasing=F)[1:5],],col=2)
+#' points(X[order(scores$lpde,decreasing=FALSE)[1:5],],col=2)
 #'
 #'
 #'  # compute outlier scores for k= 10,20 with 10% subsampling for methods 'lof' and 'lpdf'
@@ -99,7 +99,7 @@
 #'
 #' # plot data and highlight top 5 outliers retuned by lof for k=20
 #' plot(X)
-#' points(X[order(scores$lof[,2],decreasing=T)[1:5],],col=2)
+#' points(X[order(scores$lof[,2],decreasing=TRUE)[1:5],],col=2)
 #'
 #'
 
@@ -108,13 +108,17 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
                       ldf.param = c(h = 1, c = 0.1),
                       rkof.param = c(alpha = 1, C = 1, sig2 = 1),
                       lpdf.param = c(cov.type = 'full', sigma2 = 1e-5, tmax=1, v=1),
-                      treetype='kd', searchtype='standard',eps=0.0,scale.data=T){
+                      treetype='kd', searchtype='standard',eps=0.0,scale.data=TRUE){
 
   if(is.null(k))
     stop('k is missing')
 
   if(!is.numeric(k))
     stop('k is not numeric')
+
+  # coerce X and Y to class matrix
+  X <- as.matrix(X)
+  Y <- as.matrix(Y)
 
   if(!is.numeric(X))
     stop('the data matrix X contains non-numeric data type')
@@ -125,10 +129,19 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
 
 
 
+  if(!is.matrix(X))
+    stop('X must be of class matrix')
 
 
-  X <- as.matrix(X)
-  Y <- as.matrix(Y)
+  if(!is.matrix(Y))
+    stop('Y must be of class matrix')
+
+
+
+
+
+
+
   # number of rows of X
   n <- nrow(X)
   # number of rows of Y
@@ -148,6 +161,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
   kmax <-  max(k)
   len.k <- length(k)
   if(kmax > m-1 ){stop('k is greater than size of reference set Y')}
+  if(min(k) < 2 ){ stop('k must be greater than 1') }
 
   # compute distance (euclidean) matrix between X and Y and returns kNNs ids and kNNs distances
   knn <- nn2(data=Y,query=X,k = kmax+1,treetype=treetype,searchtype=searchtype)
