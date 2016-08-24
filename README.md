@@ -1,8 +1,24 @@
+### Package Developement
+
+**Package is still under developement**
+
 ### Overview
 
+<<<<<<< HEAD
 The **ldbod** package provides flexible functions for computing local density-based outlier scores using efficient nearest neighbor search. Functions included in this package can be used for computing local density-based outlier scores in the unsupervised and semi-supervised setting. Two functions are included 'ldbod()' and 'ldbod2()'. Function 'ldbod(X,k,...)' computes outlier scores referencing random subamples of the input data, X. Fucntion 'ldbod2(X,Y,k,...)' computes outlier scores based on a reference data set, Y. Y can be a set of "normal" data points for semi-supervised outlier detection.
 
 Efficient nearest neighbor search is implemented using a k-d tree with default set to exact search. Other options exist for computing kNNs. Refer to **RANN** package for more details on changing parameters for nearest neighbor.
+=======
+The **ldbod** package provides flexible functions for computing local density-based outlier scores. Both exact and approximate nearest neighbor search can be implemented based on an efficient k-d tree method, while also accomodating multiple k values and four different local density-based methods, LOF, LDF, RKOF, and LPDF. It allows for subsampling of input data or a user specified reference data set to compute outlier scores against, so both unsupervised and semi-supervised outlier detection can be done.
+
+Two functions are included,`ldbod` and `ldbod.ref`. Function `ldbod(X,k,...)` computes outlier scores referencing random subamples of the input data, X. Function `ldbod.ref(X,Y,k,...)` computes outlier scores for X based on a reference data set, Y. Y can be a set of "normal" data points for semi-supervised outlier detection. Note: Outlier score lpdr is only designed for the unsupervised outlier detection and should not be used in the semi-supervised setting. Both functions can return nine outlier scores based on the methods LOF, LDF, RKOF, and LPDF. Each method returns both densities and relative densities.
+
+All kNN computations are carried out using the `nn2` function from the **RANN** package. For method LPDF, multivariate t densities are computed using the `dmt` function from the **mnormt** package. Refer to specific packages for more details. Note: all neighborhoods are strickly of size k; therefore, the algorithms for LOF, LDF, and RKOF are not exact implementations, but are similiar for most situation and equivalent when distance to k-th nearest neighbor is unique. If there are many duplicate data points, then implementation of algorithms could lead to dramatically different (positive or negative) results than those that allow neighborhood sizes larger than k, especially if k is relatively small. Removing duplicates is recommended before computing outlier scores unless there is good reason to keep them.
+
+### Motivation
+
+The main motivation for this package is the need for more flexible implementations of local density-based outlier detection methods, than can be used in ensemble outlier detection. The package is based on the PhD dissteration work by K. Williams (2016).
+>>>>>>> 42fb35d9390784823160ba2ed71f78c26e008ac5
 
 ### Installation
 

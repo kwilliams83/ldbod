@@ -3,14 +3,20 @@ Type: Package
 Title: Local Density-Based Outlier Detection
 Version: 0.1.0
 Author: Kristopher Williams
-Maintainer: Who to complain to <kristopher.williams83@gmail.com>
-Description: Compute local density-based outlier scores for ranking outliers with flexible nearest
-    neighbor search.  Accommodates unsupervised and semi-supervised outlier detection, and allows for
-    random subsampling.
+Maintainer: <kristopher.williams83@gmail.com>
+Description: Flexible procedure for computing local density-based outlier scores for ranking outliers.  Both exact and approximate nearest
+    neighbor search can be implemented, while also accomodating multiple k values and four different local density-based methods.  See
+    RANN package documentation for details on nearest neighbor search procedure.  It allows for subsampling of input data or a user specified reference data set to compute outlier scores against,
+    so both unsupervised and semi-supervised outlier detection can be do
 Depends:
     RANN,
     mnormt
-License: GPL
+Suggests: knitr,
+    rmarkdown,
+    testthat
+License: GPL-3
+URL: https://github.com/kwilliams83/ldbod
 LazyData: TRUE
 RoxygenNote: 5.0.1
-https://github.com/kt1williams/ldbod
+https: //github.com/ktwilliams83/ldbod
+VignetteBuilder: knitr
