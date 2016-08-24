@@ -2,10 +2,6 @@
 
 export(ldbod)
 export(ldbod.ref)
-export(ldf.ref.fun)
-export(lof.ref.fun)
-export(lpdf.ref.fun)
-export(rkof.ref.fun)
 importFrom(RANN,nn2)
 importFrom(mnormt,dmnorm)
 importFrom(mnormt,dmt)

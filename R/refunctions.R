@@ -4,7 +4,7 @@
 
 
 ##  returns lrd and lof
-#' @export
+#@export
 lof.ref.fun <- function(kk, knn_ids,reach_dist_matrix_test,reach_dist_matrix_train){
 
   # compute local reachability density for test points
@@ -26,7 +26,7 @@ lof.ref.fun <- function(kk, knn_ids,reach_dist_matrix_test,reach_dist_matrix_tra
 
 
 ## returns lde and ldf
-#' @export
+# @export
 ldf.ref.fun <- function(n,m,p,kk,knn_ids,knn_ids_train,dist_k_train,reach_dist_matrix_test,reach_dist_matrix_train,h,c){
 
 
@@ -54,7 +54,7 @@ ldf.ref.fun <- function(n,m,p,kk,knn_ids,knn_ids_train,dist_k_train,reach_dist_m
 
 
 ## returns kde and rkof
-#' @export
+#@export
 rkof.ref.fun <- function(n,m,p,kk,knn_ids, knn_ids_train, dist_k_train, knn_dist_matrix,knn_dist_matrix_train,alpha,C,sig2)
 
   {
@@ -103,7 +103,7 @@ rkof.ref.fun <- function(n,m,p,kk,knn_ids, knn_ids_train, dist_k_train, knn_dist
 
 
 ## returns lpde, lpdf, and lpdr
-#' @export
+#@export
 lpdf.ref.fun <- function(X, Y, n, m, p, kk, knn_ids, knn_ids_train, dist_k_train,
                          knn_dist_matrix, knn_dist_matrix_train, cov.type, tmax, sigma2, v)
 {
