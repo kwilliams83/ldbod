@@ -1,8 +1,14 @@
 
 
 
+
 #### sub-routine functions ####
 
+
+#### sub-routine functions #####
+#' @importFrom stats sd cov.wt sd dt
+#' @importFrom RANN nn2
+#' @importFrom mnormt dmt pd.solve dmnorm
 
 
 
@@ -50,8 +56,6 @@ ldf.fun <- function(kk,n,p, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_t
 rkof.fun <- function(kk,n,p,knn_ids, sub_sample_ids, dist_k, knn_dist_matrix,alpha, C, sig2)
 {
 
-  n <- nrow(X)
-  p <- ncol(X)
   ## compute kde for each point in X
   kde <-  sapply(1:n, function(id){
 

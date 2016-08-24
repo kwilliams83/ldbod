@@ -2,13 +2,13 @@
 % Please edit documentation in R/ldbod.R
 \name{ldbod}
 \alias{ldbod}
-\title{Local Density-Based Outlier Detection with Approximate Nearest Neighbor Search and Subsampling}
+\title{Local Density-Based Outlier Detection using Subsampling with Approximate Nearest Neighbor Search}
 \usage{
-ldbod(X, k = c(10, 20), nsub = nrow(as.matrix(X)), method = c("lof",
-  "ldf", "rkof", "lpdf"), ldf.param = c(h = 1, c = 0.1),
-  rkof.param = c(alpha = 1, C = 1, sig2 = 1), lpdf.param = c(cov.type =
-  "full", sigma2 = 1e-05, tmax = 1, v = 1), treetype = "kd",
-  searchtype = "standard", eps = 0, scale.data = T)
+ldbod(X, k = c(10, 20), nsub = nrow(X), method = c("lof", "ldf", "rkof",
+  "lpdf"), ldf.param = c(h = 1, c = 0.1), rkof.param = c(alpha = 1, C = 1,
+  sig2 = 1), lpdf.param = c(cov.type = "full", sigma2 = 1e-05, tmax = 1, v =
+  1), treetype = "kd", searchtype = "standard", eps = 0,
+  scale.data = TRUE)
 }
 \arguments{
 \item{X}{An n x p data matrix to compute outlier scores}
@@ -26,7 +26,7 @@ one method.  By default all methods are computed}
 and  sig2 is the variance parameter.  Default values are alpha=1, C=1, sig2=1}
 
 \item{lpdf.param}{Vector of paramters for method LPDF.  cov.type is the covariance parameterization type,
-which users can specifiy as either 'full' or 'diag'.  sigam2 is the positive regularization parameter, tmax is the maximum number of updates, and
+which users can specifiy as either 'full' or 'diag'.  sigma2 is the positive regularization parameter, tmax is the maximum number of updates, and
 v is the degrees of freedom for the multivariate t distribution.  Default values are cov.type = 'full',tmax=1, sigma2=1e-5, and v=1.}
 
 \item{treetype}{Character vector specifiying tree method.  Either 'kd' or 'bd' tree may be specified.  Default is 'kd'.
@@ -66,7 +66,7 @@ If a method is not specified then returns NULL
 This function computes local density-based outlier scores for input data.
 }
 \details{
-Computes the local density-based outlier scores for X referencing a random subsample of the input data X. The subsampled
+Computes the local density-based outlier scores for input data, X, referencing a random subsample of X. The subsampled
 data set is constructed by drawning nsub samples from X without replacement.
 
 Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
@@ -82,7 +82,7 @@ neighborhood sizes larger than k, especially if k is relatively small.  Removing
 outlier scores unless there is good reason to keep them.
 
 The algorithm can be used to compute an ensemble of unsupervised outlier scores by using multiple k values
-and iterating over multiple subsampling epochs.
+and iterating over multiple subsamples.
 }
 \examples{
 # 500 x 2 data matrix
@@ -108,11 +108,11 @@ points(X[order(scores$lpde,decreasing=FALSE)[1:5],],col=2)
 
 # compute outlier scores for k= 10,20 with 10\% subsampling for methods 'lof' and 'lpdf'
 scores <- ldbod(X, k = c(10,20), nsub = 0.10*nrow(X), method = c('lof','lpdf'))
+scores <- ldbod(X, k = c(10,20),nsub = 0.10*nrow(X), method = c('lof','lpdf'))
 
 # plot data and highlight top 5 outliers retuned by lof for k=20
 plot(X)
 points(X[order(scores$lof[,2],decreasing=TRUE)[1:5],],col=2)
-
 
 
 }
