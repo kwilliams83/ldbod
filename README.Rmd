@@ -35,11 +35,7 @@ install.packages("devtools")
 devtools::install_github("kwilliams83/ldbod")
 ```
 
-<<<<<<< HEAD
-### Examples
-To compute 
-=======
->>>>>>> 42fb35d9390784823160ba2ed71f78c26e008ac5
+
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
