@@ -427,7 +427,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
           weights = weights/sum(weights)
 
           # comptue ratio of density to weighted neighborhood density
-          log1p(dens[id])/sum(log1p(dens[sub_sample_ids[knn_ids[id,1:kk]]]))
+          log1p(dens[id])/sum(weights*log1p(dens[sub_sample_ids[knn_ids[id,1:kk]]]))
 
         })
 

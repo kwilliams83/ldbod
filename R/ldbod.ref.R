@@ -479,7 +479,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
           weights = weights/sum(weights)
 
           # comptue ratio of density to weighted neighborhood density
-          log1p(dens[id])/sum(log1p(dens_train[knn_ids[id,1:kk]]))
+          log1p(dens[id])/sum(weights*log1p(dens_train[knn_ids[id,1:kk]]))
 
         })
 
@@ -494,7 +494,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
           weights = weights/sum(weights)
 
           # comptue ratio of density to weighted neighborhood density
-          log1p(dens_train[id])/sum(log1p(dens_train[knn_ids_train[id,1:kk]]))
+          log1p(dens_train[id])/sum(weights*log1p(dens_train[knn_ids_train[id,1:kk]]))
 
         })
 
