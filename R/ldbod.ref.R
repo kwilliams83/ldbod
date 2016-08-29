@@ -105,6 +105,9 @@
 #' points(X[order(scores$lof[,2],decreasing=TRUE)[1:5],],col=2)
 #'
 #'
+#' @importFrom stats sd cov.wt sd dt
+#' @importFrom RANN nn2
+#' @importFrom mnormt dmt pd.solve dmnorm
 
 #' @export
 ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'),
