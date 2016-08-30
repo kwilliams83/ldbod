@@ -72,8 +72,8 @@
 #' J. Gao, W. Hu, Z. Zhang, X. Zhang, and O. Wu (2011). RKOF: Robust kernel-based local outlier detection. In Proc. of Advances in Knowledge Discovery and
 #' Data Mining, 270-283.
 #'
-#' K. Williams (2016).  Local parametric density-based outlier deteciton and ensemble learning with application to malware detection. PhD dissertation,
-#' The University of Texas at San Antonio. Unpublished manuscript
+#' K. Williams (2016).  Local parametric density-based outlier deteciton and ensemble learning with application to malware detection. (Unpublished doctoral dissertation).
+#' The University of Texas at San Antonio, San Antonio, TX.
 #' @examples
 #' # 500 x 2 data matrix
 #' X <- matrix(rnorm(1000),500,2)
@@ -104,7 +104,11 @@
 #' # plot data and highlight top 5 outliers retuned by lof for k=20
 #' plot(X)
 #' points(X[order(scores$lof[,2],decreasing=TRUE)[1:5],],col=2)
-
+#'
+#'
+#' @importFrom stats sd cov.wt sd dt
+#' @importFrom RANN nn2
+#' @importFrom mnormt dmt pd.solve dmnorm
 #'
 #'
 #' @export
