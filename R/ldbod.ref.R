@@ -9,7 +9,7 @@
 #' @param method Character vector specifying the local density-based method(s) to compute. User can specify more than
 #' one method.  By default all methods are computed
 #' @param ldf.param Vector of parameters for method LDF. h is the positive bandwidth parameter and c is a positive scaling constant.  Default values are h=1 and c=0.1
-#' @param rkof.param Vector  parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
+#' @param rkof.param Vector of parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
 #' and  sig2 is the variance parameter.  Default values are alpha=1, C=1, sig2=1
 #' @param lpdf.param Vector of paramters for method LPDF.  cov.type is the covariance parameterization type,
 #' which users can specifiy as either 'full' or 'diag'.  sigma2 is the positive regularization parameter, tmax is the maximum number of updates, and

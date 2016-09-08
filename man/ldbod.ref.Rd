@@ -21,7 +21,7 @@ one method.  By default all methods are computed}
 
 \item{ldf.param}{Vector of parameters for method LDF. h is the positive bandwidth parameter and c is a positive scaling constant.  Default values are h=1 and c=0.1}
 
-\item{rkof.param}{Vector  parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
+\item{rkof.param}{Vector of parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
 and  sig2 is the variance parameter.  Default values are alpha=1, C=1, sig2=1}
 
 \item{lpdf.param}{Vector of paramters for method LPDF.  cov.type is the covariance parameterization type,
