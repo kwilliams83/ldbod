@@ -264,9 +264,6 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
     if('lof'%in%method){
 
       # compute local reachability density for test points
-      #lof.scores <- lof.ref.fun(kk, knn_ids,reach_dist_matrix_test,reach_dist_matrix_train)
-
-      # compute local reachability density for test points
       lrd <- 1/(apply(reach_dist_matrix_test,1,mean)+1e-200)
       # compute local reachability density for train points
       lrd_train <- 1/(apply(reach_dist_matrix_train,1,mean)+1e-200)
@@ -288,9 +285,6 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
       # parameters
       h <- ldf.param[names(ldf.param)=='h']
       c <- ldf.param[names(ldf.param)=='c']
-
-      ## returns lde and ldf
-      #ldf.scores <- ldf.ref.fun(n, m, p, kk, knn_ids, knn_ids_train, dist_k_train, reach_dist_matrix_test, reach_dist_matrix_train, h, c)
 
       ## compute local density estimate for test and train data sets
       lde <-sapply(1:n,function(id)mean(1/((2*pi)^(p/2))*1/(h*dist_k_train[knn_ids[id,1:kk]])^p*
@@ -322,9 +316,6 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
       alpha <- rkof.param[names(rkof.param)=='alpha']
       C     <- rkof.param[names(rkof.param)=='C']
       sig2  <- rkof.param[names(rkof.param)=='sig2']
-
-      #rkof.scores <- rkof.ref.fun(n, m, p, kk, knn_ids, knn_ids_train, dist_k_train,
-      #                            knn_dist_matrix, knn_dist_matrix_train, alpha, C, sig2)
 
       ## compute kde for test set
       kde <-  sapply(1:n,function(id){
@@ -374,10 +365,6 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
       tmax   <- as.numeric(lpdf.param[names(lpdf.param)=='tmax'])
       sigma2 <- as.numeric(lpdf.param[names(lpdf.param)=='sigma2'])
       v      <- as.numeric(lpdf.param[names(lpdf.param)=='v'])
-
-
-      #lpdf.scores <- lpdf.ref.fun(X, Y, n, m, p, kk, knn_ids, knn_ids_train, dist_k_train,
-       #                            knn_dist_matrix, knn_dist_matrix_train, cov.type, tmax, sigma2, v)
 
       tmax <- tmax+1
       II <- diag(1,p,p)

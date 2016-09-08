@@ -261,9 +261,6 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
       ############  compute outlier scores lrd and lof  ############
       if('lof'%in%method){
 
-        #lof.scores <- lof.fun(kk,n,p, sub_sample_ids, knn_ids, reach_dist_matrix_test)
-
-
         # compute local reachability density for each point in X
         lrd <- 1/(apply(reach_dist_matrix_test,1,mean)+1e-200)
 
@@ -285,17 +282,15 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
         h <- ldf.param[names(ldf.param)=='h']
         c <- ldf.param[names(ldf.param)=='c']
 
-        #ldf.scores <- ldf.fun(kk,n,p, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_test, h,c)
-
         lde <- sapply(1:n,function(id){
-          mean(1/((2*pi)^(p/2))*1/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^p*
-                 exp(-(.5*reach_dist_matrix_test[id,]^2)/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^2))+1e-200
+                  mean(1/((2*pi)^(p/2))*1/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^p*
+                  exp(-(.5*reach_dist_matrix_test[id,]^2)/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^2))+1e-200
         })
 
         ldf <- sapply(1:n,function(id){
-          mean.lde = mean(lde[sub_sample_ids[knn_ids[id,1:kk]]])
-          ldf = mean.lde/(lde[id]+c*mean.lde)
-          return(ldf)
+                  mean.lde = mean(lde[sub_sample_ids[knn_ids[id,1:kk]]])
+                  ldf = mean.lde/(lde[id]+c*mean.lde)
+                  return(ldf)
         })
 
         # store lof and lrd for each k
@@ -319,9 +314,6 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
       alpha <- rkof.param[names(rkof.param)=='alpha']
       C     <- rkof.param[names(rkof.param)=='C']
       sig2  <- rkof.param[names(rkof.param)=='sig2']
-
-      # compute kde, wde, and rkof
-      #rkof.scores <- rkof.fun(kk,n,p,knn_ids, sub_sample_ids, dist_k, knn_dist_matrix,alpha, C, sig2)
 
       ## compute kde for each point in X
       kde <-  sapply(1:n, function(id){
@@ -364,11 +356,6 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
       tmax   <- as.numeric(lpdf.param[names(lpdf.param)=='tmax'])
       sigma2 <- as.numeric(lpdf.param[names(lpdf.param)=='sigma2'])
       v      <- as.numeric(lpdf.param[names(lpdf.param)=='v'])
-
-      # sub function for computing lpde, lpdf, lpdr
-      #lpdf.scores <- lpdf.fun(X,Y,kk,n,p,cov.type, sigma2, tmax, v, knn_ids, sub_sample_ids, dist_k, reach_dist_matrix_test)
-
-
 
       # max iterations
       tmax <- tmax+1
