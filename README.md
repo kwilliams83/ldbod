@@ -16,7 +16,7 @@ The main motivation for this package is the need for more flexible implementatio
 
 ### Installation
 
-To install the package in R use the following command:
+To install the package in R use the following commands:
 
 ``` r
 install.packages("devtools")
