@@ -22,7 +22,7 @@ one method.  By default all methods are computed}
 
 \item{ldf.param}{Vector of parameters for method LDF. h is the positive bandwidth parameter and c is a positive scaling constant.  Default values are h=1 and c=0.1}
 
-\item{rkof.param}{Vector  parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
+\item{rkof.param}{Vector of parameters for method RKOF. C is the postive bandwidth paramter, alpha is a sensitiveity parameter in the interval [0,1],
 and  sig2 is the variance parameter.  Default values are alpha=1, C=1, sig2=1}
 
 \item{lpdf.param}{Vector of paramters for method LPDF.  cov.type is the covariance parameterization type,
@@ -67,7 +67,7 @@ This function computes local density-based outlier scores for input data.
 }
 \details{
 Computes the local density-based outlier scores for input data, X, referencing a random subsample of X. The subsampled
-data set is constructed by drawning nsub samples from X without replacement.
+data set is constructed by randomly drawning nsub samples from X without replacement.
 
 Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
 Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution. Outlier scores returned are positive
@@ -82,7 +82,7 @@ neighborhood sizes larger than k, especially if k is relatively small.  Removing
 outlier scores unless there is good reason to keep them.
 
 The algorithm can be used to compute an ensemble of unsupervised outlier scores by using multiple k values
-and iterating over multiple subsamples.
+and/or iterating over multiple subsamples.
 }
 \examples{
 # 500 x 2 data matrix
@@ -92,7 +92,7 @@ X <- matrix(rnorm(1000),500,2)
 outliers <- matrix(c(rnorm(2,20),rnorm(2,-12),rnorm(2,-8),rnorm(2,-5),rnorm(2,9)),5,2)
  X <- rbind(X,outliers)
 
-# compute outlier scores without subsampling for all methods
+# compute outlier scores without subsampling for all methods using neighborhood size of 50
 scores <- ldbod(X, k=50)
 
 head(scores$lrd); head(scores$rkof)

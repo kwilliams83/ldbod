@@ -83,7 +83,7 @@
 #' outliers <- matrix(c(rnorm(2,20),rnorm(2,-12),rnorm(2,-8),rnorm(2,-5),rnorm(2,9)),5,2)
 #'  X <- rbind(X,outliers)
 #'
-#'# compute outlier scores referencing Y for all methods
+#'# compute outlier scores referencing Y for all methods using a neighborhood size of 50
 #' scores <- ldbod.ref(X,Y, k=50)
 #'
 #' head(scores$lrd); head(scores$rkof)
