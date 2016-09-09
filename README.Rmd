@@ -17,7 +17,7 @@ All kNN computations are carried out using the `nn2` function from the **RANN** 
   
 
 ### Motivation
-The main motivation for this package is the need for more flexible implementations of local density-based outlier detection methods, that can be used in ensemble outlier detection. The package is based on the PhD dissteration work by K. Williams (2016).
+The main motivation for this package is the need for more flexible implementations of local density-based outlier detection methods, that can be used in ensemble outlier detection. The package is based on the PhD dissteration work by K. Williams (2016) (*Not yet published*).
 
 ### LPDF algorithm
 ![alt tag](https://github.com/kwilliams83/ldbod/blob/master/LPDFalgo.jpg)
