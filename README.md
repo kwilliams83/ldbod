@@ -16,7 +16,7 @@ The main motivation for this package is the need for more flexible implementatio
 
 ### LPDF algorithm
 
-![alt tag](https://github.com/kwilliams83/ldbod/to/LPDFalgo.jpeg)
+![alt tag](https://github.com/kwilliams83/ldbod/LPDFalgo.jpeg)
 
 ### Installation
 
