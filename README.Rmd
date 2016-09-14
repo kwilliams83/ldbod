@@ -19,10 +19,15 @@ The main motivation for this package is the need for more flexible implementatio
 
 
 ### Installation
-To install the package in R use the following commands: 
+To install the most up to date version in R use the following commands: 
 ``` r
 install.packages("devtools")
 devtools::install_github("kwilliams83/ldbod")
+```
+
+or using CRAN
+``` r
+install.packages("ldbod")
 ```
 
 
