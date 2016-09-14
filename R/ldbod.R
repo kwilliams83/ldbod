@@ -89,22 +89,21 @@
 #'
 #' # plot data and highlight top 5 outliers retured by lof
 #' plot(X)
-#' points(X[order(scores$lof,decreasing=TRUE)[1:5],],col=2)
+#' top5outliers <- X[order(scores$lof,decreasing=TRUE)[1:5],]
+#' points(top5outliers,col=2)
 #'
 #' # plot data and highlight top 5 outliers retured by outlier score lpde
 #' plot(X)
-#' points(X[order(scores$lpde,decreasing=FALSE)[1:5],],col=2)
-#'
+#' top5outliers <- X[order(scores$lpde,decreasing=FALSE)[1:5],]
+#' points(top5outliers,col=2)
 #'
 #'# compute outlier scores for k= 10,20 with 10% subsampling for methods 'lof' and 'lpdf'
 #' scores <- ldbod(X, k = c(10,20), nsub = 0.10*nrow(X), method = c('lof','lpdf'))
-#' scores <- ldbod(X, k = c(10,20),nsub = 0.10*nrow(X), method = c('lof','lpdf'))
-
 #'
 #' # plot data and highlight top 5 outliers retuned by lof for k=20
 #' plot(X)
-#' points(X[order(scores$lof[,2],decreasing=TRUE)[1:5],],col=2)
-#'
+#' top5outliers <- X[order(scores$lof[,2],decreasing=TRUE)[1:5],]
+#' points(top5outliers,col=2)
 #'
 #' @importFrom stats sd cov.wt sd dt
 #' @importFrom RANN nn2
@@ -149,11 +148,9 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
   len.k <- length(k)
 
 
-  if(kmax > nsub - 1 )
-    stop('k is greater than nsub')
+  if(kmax > nsub - 1 ) stop('k is greater than nsub')
 
-  if(min(k) < 2 )
-    stop('k must be greater than 1')
+  if(min(k) < 2 ) stop('k must be greater than 1')
 
 
 
@@ -181,7 +178,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
 
 
   # compute distance (euclidean) matrix between X and Y and returns kNN ids and kNN distances #
-  knn <- nn2(data = Y,query = X,k = kmax+1,treetype=treetype, searchtype=searchtype, eps=eps)
+  knn <- RANN::nn2(data = Y,query = X,k = kmax+1,treetype=treetype, searchtype=searchtype, eps=eps)
 
   # kNN id matrix
   knn_ids <- knn$nn.idx[,-1]
@@ -268,8 +265,8 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
         lof <- apply(knn_ids[,1:kk],1,function(x)mean(lrd[sub_sample_ids[x]]))/lrd
 
         # store lof and lrd for each k
-        store_lrd[,ii] <- lrd#lof.scores$lrd
-        store_lof[,ii] <- lof#lof.scores$lof
+        store_lrd[,ii] <- lrd
+        store_lof[,ii] <- lof
 
       }# end if statement for lof
 
@@ -294,8 +291,8 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
         })
 
         # store lof and lrd for each k
-        store_lde[,ii] <- lde#ldf.scores$lde
-        store_ldf[,ii] <- ldf#ldf.scores$ldf
+        store_lde[,ii] <- lde
+        store_ldf[,ii] <- ldf
 
       }# end if statement for ldf
 
@@ -338,8 +335,8 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
       rkof <- wde/kde
 
       # store kde and rkof for each k
-      store_kde[,ii] <- kde#rkof.scores$kde
-      store_rkof[,ii] <- rkof#rkof.scores$rkof
+      store_kde[,ii] <- kde
+      store_rkof[,ii] <- rkof
 
     }# end if statement for rkof
 
@@ -405,7 +402,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
 
 
           # compute multivaritae t density with degrees of freedom v
-          density =  dmt(x,mean=center,S=scatter,df=v)+1e-200
+          density = mnormt::dmt(x,mean=center,S=scatter,df=v)+1e-200
 
         })
 
@@ -442,9 +439,9 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
       lpdr <- lpde - log(store_dens[,1])
 
 
-      store_lpde[,ii] <- lpde#lpdf.scores$lpde
-      store_lpdf[,ii] <- lpdf#lpdf.scores$lpdf
-      store_lpdr[,ii] <- lpdr#lpdf.scores$lpdr
+      store_lpde[,ii] <- lpde
+      store_lpdf[,ii] <- lpdf
+      store_lpdr[,ii] <- lpdr
 
 
     }# end if statement for lpdf
