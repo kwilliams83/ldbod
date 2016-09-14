@@ -4,9 +4,6 @@ output:
     variant: markdown_github
 ---
 
-### Package Developement
-**Package is still under developement**
-
 ### Overview
 
 The **ldbod** package provides flexible functions for computing local density-based outlier scores. Both exact and approximate nearest neighbor search can be implemented based on an efficient k-d tree method, while also accomodating multiple k values and four different local density-based methods, LOF, LDF, RKOF, and LPDF.  It allows for subsampling of input data or a user specified reference data set to compute outlier scores against, so both unsupervised and semi-supervised outlier detection can be done.  
