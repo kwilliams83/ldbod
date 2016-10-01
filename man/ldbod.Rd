@@ -75,7 +75,7 @@ except for lpde and lpdr which are log scaled densities (natural log). Score lpd
 
 All kNN computations are carried out using the nn2() function from the RANN package. Multivariate t densities are
 computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.  Note: all
-neighborhoods are strickly of size k; therefore, the algorithms for LOP, LDF, and RKOF are not exact implementations, but
+neighborhoods are strickly of size k; therefore, the algorithms for LOF, LDF, and RKOF are not exact implementations, but
 algorithms are similiar for most situation and are equivalent when distance to k-th nearest neighbor is unique.  If there are many
 many duplicate data points, then implementation of algorithms could lead to dramatically different (positive or negative) results than those that allow
 neighborhood sizes larger than k, especially if k is relatively small.  Removing duplicates is recommended before computing

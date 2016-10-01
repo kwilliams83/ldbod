@@ -69,21 +69,21 @@ reference points; otherwise, Y can be any other set of reference points of inter
 a subset of X.
 Four different methods can be implemented LOF, LDF, RKOF, and LPDF.  Each method specified returns densities and relative densities.
 Methods LDF and RKOF uses guassian kernels, and method LDPF uses multivarite t distribution.
-Outlier scores returned are non-negative except for lpde adn lpdr which are log scaled densities (natural log). Note: Outlier score
+Outlier scores returned are non-negative except for lpde and lpdr which are log scaled densities (natural log). Note: Outlier score
 lpdr is strictly designed for unsupervised outlier detection and should not be used in the semi-supervised setting.
 Refer to references for
 more details about each method.
 
 All kNN computations are carried out using the nn2() function from the RANN package. Multivariate t densities are
 computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.  Note: all
-neighborhoods are strickly of size k; therefore, the algorithms for LOP, LDF, and RKOF are not exact implementations, but
+neighborhoods are strickly of size k; therefore, the algorithms for LOF, LDF, and RKOF are not exact implementations, but
 algorithms are similiar for most situation and are equivalent when distance to k-th nearest neighbor is unique.  If there are many
 many duplicate data points in Y, then implementation of algorithms could lead to dramatically different (positive or negative) results than those that allow
 neighborhood sizes larger than k, especially if k is relatively small.  Removing duplicates is recommended before computing
 outlier scores unless there is good reason to keep them.
 
-#' The algorithm can be used to compute an ensemble of unsupervised outlier scores by using multiple k values
-and multiple iterations of reference data.
+The algorithm can be used to compute an ensemble of unsupervised outlier scores by using multiple k values
+and/or multiple iterations of reference data.
 }
 \examples{
 # 500 x 2 data matrix
