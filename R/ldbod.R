@@ -31,7 +31,7 @@
 #' computed using the dmt() function from the mnormt package.  Refer to specific packages for more details.  Note: all
 #' neighborhoods are strickly of size k; therefore, the algorithms for LOF, LDF, and RKOF are not exact implementations, but
 #' algorithms are similiar for most situation and are equivalent when distance to k-th nearest neighbor is unique.  If there are many
-#' many duplicate data points, then implementation of algorithms could lead to dramatically different (positive or negative) results than those that allow
+#' duplicate data points, then implementation of algorithms could lead to dramatically different (positive or negative) results than those that allow
 #' neighborhood sizes larger than k, especially if k is relatively small.  Removing duplicates is recommended before computing
 #' outlier scores unless there is good reason to keep them.
 #'
@@ -66,7 +66,7 @@
 #' @references M. M. Breunig, H-P. Kriegel, R.T. Ng, and J. Sander (2000). LOF: Identifying density-based local outliers.  In Proc. of ACM
 #' International Conference on Knowledge Discovery and Data Mining, 93-104.
 #'
-#' L. J. Latecki, A. Lazarevic, and D. Pokrajac (2007). Outlier Detection with kernel density funcions.  In Proc. of Machine Learning and Data
+#' L. J. Latecki, A. Lazarevic, and D. Pokrajac (2007). Outlier Detection with kernel density functions.  In Proc. of Machine Learning and Data
 #' Mining in Pattern Recognition, 61-75
 #'
 #' J. Gao, W. Hu, Z. Zhang, X. Zhang, and O. Wu (2011). RKOF: Robust kernel-based local outlier detection. In Proc. of Advances in Knowledge Discovery and
