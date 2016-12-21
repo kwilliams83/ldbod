@@ -139,7 +139,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
   # check max k less than than nsub-1
   kmax <-  max(k)
   len.k <- length(k)
-  if(kmax > nsub - 1 ){ stop('k is greater than nsub') }
+  if(kmax > nsub - 1 ){ stop('k is greater than or equal to nsub') }
 
   if(is.null(nsub)) (nsub <- nrow(X))
 
@@ -148,7 +148,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
   len.k <- length(k)
 
 
-  if(kmax > nsub - 1 ) stop('k is greater than nsub')
+  if(kmax > nsub -1) stop('k is greater than or equal to nsub')
 
   if(min(k) < 2 ) stop('k must be greater than 1')
 
@@ -259,7 +259,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
       if('lof'%in%method){
 
         # compute local reachability density for each point in X
-        lrd <- 1/(apply(reach_dist_matrix_test,1,mean)+1e-200)
+        lrd <- 1/(apply(reach_dist_matrix_test,1,mean)+1e-198)
 
         # compute local outlier factor for each point in X
         lof <- apply(knn_ids[,1:kk],1,function(x)mean(lrd[sub_sample_ids[x]]))/lrd
@@ -281,7 +281,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
 
         lde <- sapply(1:n,function(id){
                   mean(1/((2*pi)^(p/2))*1/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^p*
-                  exp(-(.5*reach_dist_matrix_test[id,]^2)/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^2))+1e-200
+                  exp(-(.5*reach_dist_matrix_test[id,]^2)/(h*dist_k[sub_sample_ids[knn_ids[id,1:kk]]])^2))+1e-198
         })
 
         ldf <- sapply(1:n,function(id){
@@ -316,7 +316,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
       kde <-  sapply(1:n, function(id){
 
         mean(1/(2*pi)^(p/2)*1/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)^2*
-               exp(-.5*knn_dist_matrix[id,1:kk]^2/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)))+1e-200
+               exp(-.5*knn_dist_matrix[id,1:kk]^2/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)))+1e-198
 
       })
 
@@ -402,7 +402,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
 
 
           # compute multivaritae t density with degrees of freedom v
-          density = mnormt::dmt(x,mean=center,S=scatter,df=v)+1e-200
+          density = mnormt::dmt(x,mean=center,S=scatter,df=v)+1e-198
 
         })
 

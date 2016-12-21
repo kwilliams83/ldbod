@@ -269,9 +269,9 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
     if('lof'%in%method){
 
       # compute local reachability density for test points
-      lrd <- 1/(apply(reach_dist_matrix_test,1,mean)+1e-200)
+      lrd <- 1/(apply(reach_dist_matrix_test,1,mean)+1e-198)
       # compute local reachability density for train points
-      lrd_train <- 1/(apply(reach_dist_matrix_train,1,mean)+1e-200)
+      lrd_train <- 1/(apply(reach_dist_matrix_train,1,mean)+1e-198)
 
       # compute local outlier factor for test points
       lof <- apply(knn_ids[,1:kk],1,function(x)mean(lrd_train[x]))/lrd
@@ -293,10 +293,10 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
 
       ## compute local density estimate for test and train data sets
       lde <-sapply(1:n,function(id)mean(1/((2*pi)^(p/2))*1/(h*dist_k_train[knn_ids[id,1:kk]])^p*
-                                          exp(-(.5*reach_dist_matrix_test[id,]^2)/(h*dist_k_train[knn_ids[id,1:kk]])^2))+1e-200)
+                                          exp(-(.5*reach_dist_matrix_test[id,]^2)/(h*dist_k_train[knn_ids[id,1:kk]])^2))+1e-198)
 
       lde_train <- sapply(1:m,function(id)mean(1/((2*pi)^(p/2))*1/(h*dist_k_train[knn_ids_train[id,1:kk]])^p*
-                                                 exp(-(.5*reach_dist_matrix_train[id,]^2)/(h*dist_k_train[knn_ids_train[id,1:kk]])^2))+1e-200)
+                                                 exp(-(.5*reach_dist_matrix_train[id,]^2)/(h*dist_k_train[knn_ids_train[id,1:kk]])^2))+1e-198)
 
       ## compute local density factor for test
       ldf <- sapply(1:n,function(id){
@@ -326,7 +326,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
       kde <-  sapply(1:n,function(id){
 
         mean(1/(2*pi)^(p/2)*1/(C*dist_k_train[knn_ids[id,1:kk]]^alpha)^2*
-               exp(-.5*knn_dist_matrix[id,1:kk]^2/(C*dist_k_train[knn_ids[id,1:kk]]^alpha)))+1e-200
+               exp(-.5*knn_dist_matrix[id,1:kk]^2/(C*dist_k_train[knn_ids[id,1:kk]]^alpha)))+1e-198
 
       })
 
@@ -334,7 +334,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
       kde_train <-  sapply(1:m,function(id){
 
         mean(1/(2*pi)^(p/2)*1/(C*dist_k_train[knn_ids_train[id,1:kk]]^alpha)^2*
-               exp(-.5*knn_dist_matrix_train[id,1:kk]^2/(C*dist_k_train[knn_ids_train[id,1:kk]]^alpha)))+1e-200
+               exp(-.5*knn_dist_matrix_train[id,1:kk]^2/(C*dist_k_train[knn_ids_train[id,1:kk]]^alpha)))+1e-198
 
       })
 
@@ -415,7 +415,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
 
 
           # compute multivaritae t density with degrees of freedom v
-          density = mnormt::dmt(x,mean=center,S=scatter,df=v)+1e-200
+          density = mnormt::dmt(x,mean=center,S=scatter,df=v)+1e-198
 
         })
 
@@ -458,7 +458,7 @@ ldbod.ref <- function(X , Y , k = c(10,20), method = c('lof','ldf','rkof','lpdf'
 
 
           # compute multivaritae t density with degrees of freedom v
-          density = mnormt::dmt(y,mean=center,S=scatter,df=v)+1e-200
+          density = mnormt::dmt(y,mean=center,S=scatter,df=v)+1e-198
 
         })
 
