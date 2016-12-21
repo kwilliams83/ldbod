@@ -1,13 +1,13 @@
 Package: ldbod
 Type: Package
 Title: Local Density-Based Outlier Detection
-Version: 0.1.0
+Version: 0.1.1
 Author: Kristopher Williams
 Maintainer: Kristopher Williams <kristopher.williams83@gmail.com>
 Description: Flexible procedures to compute local density-based outlier scores for ranking outliers.
   Both exact and approximate nearest neighbor search can be implemented, while also accommodating multiple
-  k values and four different local density-based methods. It allows for referencing a random subsample
-  of input data or a user specified reference data set to compute outlier scores against, so both
+  neighborhood sizes and four different local density-based methods. It allows for referencing a random subsample
+  of the input data or a user specified reference data set to compute outlier scores against, so both
   unsupervised and semi-supervised outlier detection can be implemented.
 Depends: R (>= 3.1.0)
 Imports: stats, RANN, mnormt

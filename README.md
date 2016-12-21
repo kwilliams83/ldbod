@@ -1,6 +1,6 @@
 ### Overview
 
-The **ldbod** package provides flexible functions for computing local density-based outlier scores. Both exact and approximate nearest neighbor search can be implemented based on an efficient k-d tree method, while also accomodating multiple k values and four different local density-based methods, LOF, LDF, RKOF, and LPDF. It allows for subsampling of input data or a user specified reference data set to compute outlier scores against, so both unsupervised and semi-supervised outlier detection can be done.
+The **ldbod** package provides flexible functions for computing local density-based outlier scores. Both exact and approximate nearest neighbor search can be implemented based on an efficient k-d tree method, while also accomodating multiple neigbhorhood sizes and four different local density-based methods, LOF, LDF, RKOF, and LPDF. It allows for subsampling of input data or a user specified reference data set to compute outlier scores against, so both unsupervised and semi-supervised outlier detection can be done.
 
 Two functions included are,`ldbod` and `ldbod.ref`. Function `ldbod(X,k,...)` computes outlier scores referencing random subamples of the input data, X. Function `ldbod.ref(X,Y,k,...)` computes outlier scores for X based on a reference data set, Y. Y can be a set of "normal" data points for semi-supervised outlier detection. Note: Outlier score lpdr is only designed for unsupervised outlier detection and should not be used in the semi-supervised setting. Both functions can return nine outlier scores based on the methods LOF, LDF, RKOF, and LPDF. Each method returns both densities and relative densities.
 
@@ -8,7 +8,7 @@ All kNN computations are carried out using the `nn2` function from the **RANN** 
 
 ### Motivation
 
-The main motivation for this package is the need for more flexible implementations of local density-based outlier detection methods, that can be used in ensemble outlier detection. The package is based on the PhD dissteration work by K. Williams (2016) (*Not yet published*).
+The main motivation for this package is the need for more flexible implementations of local density-based outlier detection methods, that can be used in ensemble outlier detection. The package is based on the PhD dissteration work by K. Williams (2016).
 
 ### Installation
 
