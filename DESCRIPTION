@@ -10,7 +10,7 @@ Description: Flexible procedures to compute local density-based outlier scores f
   referencing a random subsample of the input data or a user specified reference data set
   to compute outlier scores against, so both unsupervised and semi-supervised outlier
   detection can be implemented.
-Depends: R (>= 3.1.0)
+Depends: R (>= 3.2.0)
 Imports: stats, RANN, mnormt
 License: GPL-3
 URL: https://github.com/kwilliams83/ldbod
