@@ -1,7 +1,7 @@
 Package: ldbod
 Type: Package
 Title: Local Density-Based Outlier Detection
-Version: 0.1.1
+Version: 0.1.2
 Author: Kristopher Williams
 Maintainer: Kristopher Williams <kristopher.williams83@gmail.com>
 Description: Flexible procedures to compute local density-based outlier scores for ranking outliers.

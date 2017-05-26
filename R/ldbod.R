@@ -35,7 +35,7 @@
 #' neighborhood sizes larger than k, especially if k is relatively small.  Removing duplicates is recommended before computing
 #' outlier scores unless there is good reason to keep them.
 #'
-#' The algorithm can be used to compute an ensemble of unsupervised outlier scores by using multiple k values
+#' The algorithm can be used to compute an ensemble of outlier scores by using multiple k values
 #' and/or iterating over multiple subsamples.
 #'
 #'
