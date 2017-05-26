@@ -316,7 +316,7 @@ ldbod <- function(X, k = c(10,20), nsub = nrow(X), method = c('lof','ldf','rkof'
       kde <-  sapply(1:n, function(id){
 
         mean(1/(2*pi)^(p/2)*1/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)^2*
-               exp(-.5*knn_dist_matrix[id,1:kk]^2/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)))+1e-198
+               exp(-.5*knn_dist_matrix[id,1:kk]^2/(C*dist_k[sub_sample_ids[knn_ids[id,1:kk]]]^alpha)^2))+1e-198
 
       })
 
