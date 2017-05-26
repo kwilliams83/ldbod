@@ -132,4 +132,3 @@ Data Mining, 270-283.
 K. T. Williams (2016).  Local parametric density-based outlier deteciton and ensemble learning with application to malware detection. PhD Dissertation.
 The University of Texas at San Antonio.
 }
-
